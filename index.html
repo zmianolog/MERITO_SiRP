@@ -74,6 +74,14 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--fo
 .tag.g { background: var(--honey); color: #3A2E08 }
 .tag.i { background: var(--navy); color: #FFFFFF }
 .tag.z { background: transparent; border: 1.5px solid var(--ok); color: var(--ok) }
+.model { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; background: var(--honey-soft); border: 2px solid var(--honey); border-radius: var(--r); padding: 14px 16px; color: var(--fg); text-decoration: none; transition: transform .15s, box-shadow .15s }
+.model:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,68,96,.12) }
+.model:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px }
+.model .zico { width: 52px; height: 52px; border-radius: 12px; background: #1F4460; color: var(--honey); padding: 9px }
+.model .zico svg { width: 100%; height: 100%; fill: currentColor }
+.model b { display: block; color: var(--head); font-size: 18px }
+.model span.op { font-size: 14.5px; color: var(--on-honey) }
+.model .str { font-size: 26px; font-weight: 800; color: var(--head) }
 .stopka { color: var(--muted); font-size: 13.5px; text-align: center }
 @media (max-width: 760px) { .kafle, .jak { grid-template-columns: minmax(0, 1fr) } }
 </style>
@@ -92,6 +100,7 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--fo
 <div><b class="n">2</b><span>Wybierz numer grupy albo wpisz imię i nazwisko. Odpowiedzi zapisują się same.</span></div>
 <div><b class="n">3</b><span>Po zakończeniu wróć do tej karty. Kolejne zadanie zastąpi poprzednie w drugiej karcie.</span></div>
 </div>
+<a class="model" href="MERITO_2026_SiRP_MODEL_v1.html" target="sirp-model"><span class="zico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12.00" cy="3.00" r="1.7"/><circle cx="17.29" cy="4.72" r="1.7"/><circle cx="20.56" cy="9.22" r="1.7"/><circle cx="20.56" cy="14.78" r="1.7"/><circle cx="17.29" cy="19.28" r="1.7"/><circle cx="12.00" cy="21.00" r="1.7"/><circle cx="6.71" cy="19.28" r="1.7"/><circle cx="3.44" cy="14.78" r="1.7"/><circle cx="3.44" cy="9.22" r="1.7"/><circle cx="6.71" cy="4.72" r="1.7"/></svg></span><span><b>Model „Zegar rozwoju”</b><span class="op">Dziesięć etapów, role, narzędzia i warunki. Otwiera się w osobnej karcie, możesz do niego zaglądać przy każdym zadaniu.</span></span><span class="str" aria-hidden="true">→</span></a>
 <nav class="kafle" id="kafle" aria-label="Zadania"></nav>
 <p class="stopka">Odpowiedzi zapisują się tylko w tej przeglądarce i nie są nigdzie wysyłane.</p>
 </main>
