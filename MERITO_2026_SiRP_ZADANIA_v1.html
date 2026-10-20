@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Szkolenie i rozwój pracowników — zadania</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:"Zmianologica Sans";font-style:normal;font-weight:400;font-display:block;src:url("fonts/ZmianologicaSans-Regular.woff2") format("woff2")}
+@font-face{font-family:"Zmianologica Sans";font-style:normal;font-weight:500;font-display:block;src:url("fonts/ZmianologicaSans-Medium.woff2") format("woff2")}
+@font-face{font-family:"Zmianologica Sans";font-style:normal;font-weight:600;font-display:block;src:url("fonts/ZmianologicaSans-SemiBold.woff2") format("woff2")}
+@font-face{font-family:"Zmianologica Sans";font-style:normal;font-weight:700;font-display:block;src:url("fonts/ZmianologicaSans-Bold.woff2") format("woff2")}
+@font-face{font-family:"Zmianologica Sans";font-style:normal;font-weight:800;font-display:block;src:url("fonts/ZmianologicaSans-ExtraBold.woff2") format("woff2")}
+
+/* Układ: pasek marki, nagłówek zadania, instrukcja, materiały z przypadku GadgetPro, pola pracy, rekomendacja; pływający zegar */
+:root {
+  --bg: #F5F5F7; --surface: #FFFFFF; --fg: #1F2B36; --head: #1F4460; --muted: #5E6B78; --line: #D9E1E8;
+  --navy: #1F4460; --navy-hover: #163450; --honey: #E8B62C; --honey-soft: #FBF0CF; --on-honey: #5C4810;
+  --info: #F0F6FB; --sel: #FFF8E6; --ok: #2E6B4A; --red: #C8202E;
+  --font: "Zmianologica Sans", "Montserrat", "Segoe UI", system-ui, sans-serif; --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0E1B26; --surface: #162836; --fg: #E6EDF3; --head: #E6EDF3; --muted: #9BB0C2; --line: #263E51;
+  --navy: #2A5A7E; --navy-hover: #336A93; --honey-soft: #3A3218; --on-honey: #F3DA92; --info: #1D3446; --sel: #2E2A1A; --ok: #7CC29A; --red: #F08A92;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0E1B26; --surface: #162836; --fg: #E6EDF3; --head: #E6EDF3; --muted: #9BB0C2; --line: #263E51;
+  --navy: #2A5A7E; --navy-hover: #336A93; --honey-soft: #3A3218; --on-honey: #F3DA92; --info: #1D3446; --sel: #2E2A1A; --ok: #7CC29A; --red: #F08A92;
+  color-scheme: dark }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.55 }
+.brand { background: #1F4460; color: var(--honey); padding: 12px max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px)); font-weight: 800; letter-spacing: .2em; font-size: 12px; text-transform: uppercase; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center }
+.brand .who { color: #FFFFFF; letter-spacing: .06em; text-transform: none; font-size: 13px }
+.wrap { max-width: 920px; margin: 0 auto; padding-block: 22px 120px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 18px }
+h1 { color: var(--head); font-size: clamp(24px, 5vw, 34px); font-weight: 800; margin: 0; line-height: 1.15; text-wrap: balance }
+h2 { color: var(--head); font-size: 19px; margin: 0 }
+h3 { color: var(--muted); font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin: 0 }
+p { margin: 0 }
+.muted { color: var(--muted) }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 12px; min-width: 0 }
+
+/* Przyciski — wszystkie jednakowe */
+.btn { font: 700 15px var(--font); background: var(--navy); color: #FFFFFF; border: 0; border-radius: 999px; padding: 10px 22px; min-height: 44px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center }
+.btn:hover { background: var(--navy-hover) }
+.btn:disabled { opacity: .4; cursor: default }
+.btn:focus-visible, .chip:focus-visible, summary:focus-visible { outline: 3px solid var(--honey); outline-offset: 2px }
+.actions { display: flex; flex-wrap: wrap; gap: 10px }
+
+/* Nagłówek zadania */
+.zhead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center }
+.zico { width: 58px; height: 58px; border-radius: 14px; background: #1F4460; color: #FFFFFF; padding: 11px }
+.zico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
+.zmeta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 4px }
+.tag { font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; background: var(--info); color: var(--head) }
+.tag.g { background: var(--honey); color: #3A2E08 }
+.tag.i { background: var(--navy); color: #FFFFFF }
+.steps { margin: 0; padding-left: 22px; display: grid; gap: 6px }
+.input-box { background: var(--info); border-left: 4px solid var(--navy); border-radius: 0 10px 10px 0; padding: 12px 14px; display: grid; gap: 6px; font-size: 15px }
+
+/* Materiały */
+details.mat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r) }
+details.mat > summary { cursor: pointer; padding: 14px 18px; font-weight: 700; color: var(--head); list-style: none; display: flex; justify-content: space-between; gap: 10px }
+details.mat > summary::-webkit-details-marker { display: none }
+details.mat > summary::after { content: "+"; color: var(--honey); font-weight: 800 }
+details.mat[open] > summary::after { content: "–" }
+.matbody { padding: 0 18px 18px; display: grid; gap: 10px }
+.matbody ol, .matbody ul { margin: 0; padding-left: 22px; display: grid; gap: 6px }
+.quote { border-left: 4px solid var(--honey); padding: 4px 0 4px 12px; font-style: italic }
+.tw { overflow-x: auto }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px }
+th { text-align: left; background: #1F4460; color: #FFFFFF; padding: 8px 10px; font-weight: 700 }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+
+/* Pola pracy */
+.field { display: grid; gap: 6px }
+.field label, .lbl { font-weight: 700; color: var(--head) }
+.help { font-size: 14px; color: var(--muted) }
+input[type=text], textarea, select { width: 100%; font: 500 15.5px var(--font); color: var(--fg); background: var(--bg); border: 2px solid var(--line); border-radius: 10px; padding: 10px 12px }
+textarea { min-height: 88px; resize: vertical }
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--honey) }
+.rows { display: grid; gap: 10px }
+.row { border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 8px; background: var(--surface) }
+.row .it { font-weight: 600 }
+.row .it b { color: var(--head) }
+.ctrls { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) }
+.chips { display: flex; flex-wrap: wrap; gap: 6px }
+.chip { font: 600 14px var(--font); color: var(--fg); background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 6px 14px; cursor: pointer }
+.chip[aria-pressed="true"] { border-color: var(--honey); background: var(--sel) }
+.sub { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.saved { font-size: 13px; color: var(--ok); font-weight: 700 }
+
+/* Informacja zwrotna */
+.fb { border-left: 4px solid var(--line); background: var(--info); border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 14.5px }
+.fb.ok { border-color: var(--ok) } .fb.zle { border-color: var(--red) } .fb.wz { border-color: var(--honey) }
+.fb .t { margin-right: 4px; color: var(--head) } .fb.ok .t { color: var(--ok) } .fb.zle .t { color: var(--red) }
+.fb p { margin: 4px 0 0 } .fb ol, .fb ul { margin: 6px 0 0; padding-left: 22px; display: grid; gap: 4px }
+.wynik { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 18px; border: 3px solid var(--honey) }
+.wynik .proc { font-size: 44px; font-weight: 800; color: var(--head); line-height: 1; font-variant-numeric: tabular-nums }
+.wynik > div:only-child { grid-column: 1 / -1 }
+
+/* Rekomendacja */
+.rec { border: 3px solid var(--honey); border-radius: var(--r); background: var(--surface); padding: 18px; display: grid; gap: 10px }
+.rec h2 { color: var(--head) }
+.rec ol, .rec ul { margin: 0; padding-left: 22px; display: grid; gap: 6px }
+
+/* Lista zadań i wybór tożsamości */
+.tasks { display: grid; gap: 10px }
+.tlink { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; color: var(--fg); text-decoration: none }
+.tlink:hover { border-color: var(--navy) }
+.tlink .zico { width: 44px; height: 44px; padding: 8px; border-radius: 10px }
+.tlink b { color: var(--head); display: block }
+.tlink span.muted { font-size: 14px }
+.groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px }
+
+/* Zegar */
+.zegar { position: fixed; right: max(12px, env(safe-area-inset-right, 0px)); bottom: max(12px, env(safe-area-inset-bottom, 0px)); width: 96px; height: 96px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 6px 20px rgba(31,68,96,.3); z-index: 30; display: grid; place-items: center }
+.zegar svg { position: absolute; inset: 0; width: 100%; height: 100% }
+.zegar .tor { fill: none; stroke: #E6ECF1; stroke-width: 9 }
+.zegar .luk { fill: none; stroke: #1F4460; stroke-width: 9; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 48px 48px; transition: stroke-dashoffset .5s linear, stroke .5s }
+.zegar .sr { position: relative; text-align: center; line-height: 1 }
+.zegar .sr b { display: block; font-size: 20px; font-weight: 800; color: #1F4460; font-variant-numeric: tabular-nums }
+.zegar .sr small { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #5E6B78 }
+.zegar.f2 .luk { stroke: #E8B62C } .zegar.f2 b { color: #8A6A10 }
+.zegar.f3 .luk { stroke: #C8202E } .zegar.f3 b { color: #C8202E }
+.zegar.f4 { background: #C8202E } .zegar.f4 b, .zegar.f4 small { color: #FFFFFF } .zegar.f4 .tor { stroke: rgba(255,255,255,.35) } .zegar.f4 .luk { stroke: #FFFFFF }
+
+.okno-tlo { position: fixed; inset: 0; background: rgba(14,27,38,.55); z-index: 40; display: grid; place-items: center; padding: 16px }
+.okno { background: var(--surface); border-radius: var(--r); padding: 22px; max-width: 560px; width: 100%; display: grid; gap: 12px }
+@media print { .zegar, .brand, .actions { display: none !important } }
+</style>
+</head>
+<body>
+<header class="brand"><span>ZMIANOLOGICA · Szkolenie i rozwój pracowników</span><span class="who" id="who"></span></header>
+<main class="wrap" id="main"></main>
+<div class="zegar" id="zegar" hidden role="timer" aria-live="off"><svg viewBox="0 0 96 96"><circle class="tor" cx="48" cy="48" r="40"/><circle class="luk" id="luk" cx="48" cy="48" r="40" stroke-dasharray="251.3" stroke-dashoffset="0"/></svg><div class="sr"><small>ZOSTAŁO</small><b id="zt">--</b><small>MIN</small></div></div>
+
+<script>
+(function () {
+  /* ===================== IKONY ETAPÓW ===================== */
+  var ICONS = {
+    1: '<path d="M6 10a6 6 0 0 1 12 0v4l2 3H4l2-3z"/><path d="M10 20a2 2 0 0 0 4 0"/><path d="M12 2v2"/>',
+    2: '<path d="M12 22v-9"/><path d="M12 13c0-4-5-4-5-9"/><path d="M12 13c0-4 5-4 5-9"/><path d="M4.5 6.5 7 4l2.5 2.5"/><path d="M14.5 6.5 17 4l2.5 2.5"/>',
+    3: '<path d="M3.5 17a8.5 8.5 0 0 1 17 0"/><path d="M12 17l4-5.5"/><circle cx="12" cy="17" r="1.3"/><path d="M12 8.5V10"/><path d="M6 11l1.1 1"/><path d="M18 11l-1.1 1"/><path d="M3.5 20.5h17"/>',
+    4: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+    5: '<path d="M9 3.5h6v3H9z"/><path d="M15 5h2.5A1.5 1.5 0 0 1 19 6.5v13a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-13A1.5 1.5 0 0 1 6.5 5H9"/><path d="M8.5 13.5l2.2 2.2 4.8-4.8"/>',
+    6: '<path d="M3 4h18v12H3z"/><path d="M12 16v4"/><path d="M8 21h8"/><path d="M7 12l3-3 3 2 4-4"/>',
+    7: '<path d="M9 3h6"/><path d="M10 3v6.2L4.6 18.4A1.7 1.7 0 0 0 6.1 21h11.8a1.7 1.7 0 0 0 1.5-2.6L14 9.2V3"/><path d="M7 15h10"/>',
+    8: '<path d="M3 20h5v-5h5v-5h5V5h3"/><path d="M14 3h4v4"/>',
+    9: '<path d="M4 20h16"/><path d="M7 20v-5"/><path d="M12 20v-9"/><path d="M17 20V7"/><path d="M5 9l5-4 4 3 5-4"/>',
+    10: '<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.1v.1h5v-.1c0-.8.4-1.6 1.1-2.1A6 6 0 0 0 12 3z"/>'
+  };
+  var svg = function (n) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[n] + '</svg>'; };
+
+  /* ===================== WSPÓLNE LISTY ===================== */
+  var INBOX = ["1. Cele", "2. Struktura i procesy", "3. Zasoby i warunki pracy", "4. Wynagrodzenie", "5. Kompetencje", "6. Motywacja", "7. Zarządzanie", "8. Komunikacja formalna", "9. Współpraca", "10. Pomiar", "To objaw albo zasób, a nie przyczyna"];
+  var BLOOM = ["Wiedza", "Rozumienie", "Zastosowanie", "Analiza", "Synteza", "Ocena"];
+  var ROLE = ["Sponsor (Ewa Nowicka)", "Kierownik BOK (Tomasz Bielak)", "Liderka zespołu B (Karolina Wierzba)", "HR", "Inne działy", "Uczestnik"];
+
+  /* ===================== ZADANIA ===================== */
+  var Z = [
+  { id: "z01", nr: 1, etap: "Zgłoszenie", forma: "g", min: 20,
+    cel: "Opiszcie zgłoszoną potrzebę faktami, rozpoznajcie jej typ i zdecydujcie, czy uruchomić pełną diagnozę.",
+    kroki: ["Przeczytajcie materiały: zgłoszenie Tomasza, rozmowę z Ewą i dane z systemów.", "Przy każdej z dziesięciu wypowiedzi zaznaczcie, czy to fakt, czy interpretacja. Przy interpretacjach wpiszcie, jakimi danymi można by ją sprawdzić.", "Zaznaczcie, które warunki procedury „Kiedy pełna diagnoza” są spełnione, i podejmijcie decyzję.", "Napiszcie dwa lub trzy zdania odpowiedzi dla Tomasza w sprawie bezpłatnej diagnozy proponowanej przez „Komunikacja Plus”."],
+    mat: [
+      ["Zgłoszenie i rozmowa ze sponsorem", '<p>Na początku września do HR przychodzi wiadomość od Tomasza Bielaka, kierownika działu obsługi klienta (BOK). Tomasz pisze, że potrzebuje pilnie szkolenia z komunikacji z trudnym klientem dla całego działu, najlepiej jeszcze przed sezonem świątecznym. Uzasadnia to tym, że klienci coraz częściej się skarżą, konsultanci są dla nich niemili, a zespół jest zmęczony. Do wiadomości dołącza ofertę firmy szkoleniowej „Komunikacja Plus”, która proponuje bezpłatną diagnozę stylów komunikacji w zespole.</p><p>Ewa Nowicka, dyrektorka operacyjna, mówi, że sprawa jest pilna, bo wzrosła liczba reklamacji. Dodaje, że w ubiegłym roku firma przeszkoliła 30 osób ze standardu obsługi klienta. Uczestnicy zdobyli w teście wiedzy średnio 17 punktów na 20, w symulowanej rozmowie tylko 2,8 punktu na 5, a wskaźniki obsługi się nie poprawiły.</p>'],
+      ["Dane z systemów firmy", '<div class="tw"><table><tr><th>Wskaźnik</th><th>Styczeń–maj, przed nowym systemem</th><th>Czerwiec–sierpień</th></tr><tr><td>Reklamacje zamówień</td><td>1,8% zamówień</td><td>4,1% zamówień</td></tr><tr><td>Średni czas pierwszej odpowiedzi na e-mail</td><td>10 godzin (cel: poniżej 12)</td><td>28 godzin</td></tr><tr><td>Wskaźnik rekomendacji klientów (NPS)</td><td>36</td><td>21</td></tr><tr><td>Skargi na zachowanie pracownika</td><td>9 miesięcznie</td><td>11 miesięcznie</td></tr><tr><td>Liczba zamówień miesięcznie</td><td>około 1 700</td><td>około 1 750</td></tr></table></div><p class="muted">W czerwcu firma zastąpiła arkusze Excela nowym systemem obsługi zamówień. Wdrożenie w BOK objęło godzinny webinar dostawcy i instrukcję w PDF.</p>'],
+      ["Procedura „Kiedy pełna diagnoza”", '<p>Pełną diagnozę uruchamia się, gdy spełniony jest którykolwiek z warunków poniżej. Jeśli żaden nie jest spełniony, można zrezygnować z diagnozy, ale wtedy szkolenie ma wartość szkolenia orientacyjnego i nie można od niego oczekiwać rozwiązania problemu.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "fi", tytul: "Fakt czy interpretacja", kol: [{ k: "o", typ: "chips", opcje: ["Fakt", "Interpretacja"] }, { k: "s", typ: "text", ph: "Jak to sprawdzić (przy interpretacji)" }],
+        wiersze: ["Tomasz Bielak: „Konsultanci są niemili dla klientów.”", "Raport z systemu: odsetek reklamacji wzrósł z 1,8% do 4,1% zamówień.", "Tomasz Bielak: „Ludzie przestali się starać, odkąd mamy więcej pracy.”", "Marek Zając, magazyn: „Do magazynu przychodzą zamówienia bez ilości w rozmiarach koszulek, więc dzwonimy do BOK i czekamy.”", "Iza Kowal, studio graficzne: „Co trzecie zamówienie trafia do studia bez pliku z logo w odpowiedniej jakości.”", "Ewa Nowicka: „To jest problem z postawą, a nie z narzędziami.”", "Raport z systemu: czas pierwszej odpowiedzi wzrósł z 10 do 28 godzin.", "Konsultantka BOK: „Odkąd mamy nowy system, nie wyrabiam się z niczym.”", "Opiekun handlowy: „Klienci mówią mi, że w BOK nikt nie wie, co się dzieje z ich zamówieniem.”", "Tomasz Bielak: „Szkolenie w zeszłym roku było świetne, wszyscy wysoko je ocenili.”"] },
+      { typ: "rows", id: "tr", tytul: "Procedura „Kiedy pełna diagnoza”", kol: [{ k: "o", typ: "chips", opcje: ["Spełniony", "Niespełniony"] }],
+        wiersze: ["Błąd byłby kosztowny dla wyniku organizacji lub dla klientów.", "Szkolenie obejmuje wiele osób albo wymaga dużego budżetu.", "Wcześniejsze szkolenia na ten temat nie przyniosły poprawy.", "Problem dotyczy kilku działów albo jego przyczyny są niejasne."] },
+      { typ: "chips", id: "dec", tytul: "Decyzja do zatwierdzenia przez sponsora", opcje: ["Pełna diagnoza", "Szkolenie bez diagnozy"] },
+      { typ: "area", id: "tom", tytul: "Odpowiedź dla Tomasza w sprawie diagnozy „Komunikacja Plus”" }
+    ],
+    rek: ['<p><b>Fakty:</b> wypowiedzi 2, 4, 5 i 7. Każdą z nich da się sprawdzić w danych albo w dokumentach. Wypowiedzi 4 i 5 pochodzą od osób, ale opisują zdarzenia, które można policzyć.</p>', '<p><b>Interpretacje:</b> wypowiedzi 1, 3, 6, 8, 9 i 10. Wypowiedź 1 można sprawdzić odsłuchem rozmów, wypowiedź 3 danymi o czasie i jakości pracy, wypowiedź 6 diagnozą wszystkich obszarów organizacji, wypowiedź 8 pomiarem czasu rejestracji zamówienia, wypowiedź 9 analizą pytań klientów, a wypowiedź 10 porównaniem ocen z ankiety z wynikiem symulacji (2,8 na 5) i ze wskaźnikami.</p>', '<p><b>Procedura:</b> spełnione są wszystkie cztery warunki, więc decyzją jest pełna diagnoza. Najmocniejsze argumenty to brak efektu ubiegłorocznego szkolenia oraz to, że problem dotyczy BOK, studia, magazynu i sprzedaży. Samo to, że zgłoszenie zawiera gotowe rozwiązanie, nie przesądza o diagnozie: rozstrzyga o tym rozmowa wstępna i szybkie rozeznanie.</p>', '<p><b>Odpowiedź dla Tomasza:</b> diagnozy nie powinna prowadzić firma, która potem sprzeda szkolenie z komunikacji. Kwestionariusz stylów komunikacji mierzy wyłącznie komunikację, więc nie wykryje przyczyn leżących w procesie, narzędziach albo w sposobie rozliczania pracy.</p>'] },
+
+  { id: "z02", nr: 2, etap: "Diagnoza przyczyn", forma: "g", min: 25,
+    cel: "Rozdzielcie przyczyny na edukacyjne i pozaedukacyjne oraz wskażcie właścicieli zmian.",
+    kroki: ["Przeczytajcie dwanaście ustaleń partnera diagnostycznego, dr Haliny Wróbel.", "Przy każdym ustaleniu wybierzcie element uproszczonego inBOX i zaznaczcie, czy to trzeba zainstalować, zbudować, czy trzeba się tego nauczyć. Jeśli ustalenie jest objawem albo zasobem, wybierzcie ostatnią opcję.", "Przy przyczynach pozaedukacyjnych wpiszcie właściciela zmiany.", "Odpowiedzcie na dwa pytania pod listą."],
+    mat: [
+      ["Jak pracował partner diagnostyczny", '<p>Ewa Nowicka zgodziła się na pełną diagnozę. HR zaprosiło dr Halinę Wróbel, konsultantkę organizacyjną, która nie prowadzi szkoleń z komunikacji i nie będzie prowadziła szkolenia w GadgetPro. Halina przeanalizowała dane z systemu i 60 zamówień, przez dwa dni obserwowała pracę obu zespołów BOK, odsłuchała 40 rozmów, przeprowadziła wywiady z dwunastoma osobami z BOK, sprzedaży, studia i magazynu oraz zorganizowała krótki test zadaniowy.</p><p>W trakcie diagnozy „Komunikacja Plus” proponuje Tomaszowi bezpłatny kwestionariusz stylów komunikacji, który ma „precyzyjnie określić luki komunikacyjne zespołu”.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "us", tytul: "Ustalenia partnera diagnostycznego", kol: [{ k: "a", typ: "select", opcje: INBOX, ph: "element inBOX" }, { k: "t", typ: "chips", opcje: ["Instalować", "Budować", "Uczyć się"] }, { k: "w", typ: "text", ph: "Właściciel zmiany" }],
+        wiersze: ["Zarejestrowanie zamówienia z nadrukiem wymaga przejścia przez dziewięć ekranów. Rejestracja trwa średnio 11 minut, w Excelu trwała 4 minuty.", "Konsultanci BOK nie mają dostępu do modułu „Status produkcji”. Na pytanie klienta o status piszą do magazynu, a odpowiedź przychodzi średnio po jednym dniu.", "38% zamówień trafia do studia z niepełną specyfikacją: bez pliku z logo, numeru koloru albo miejsca nadruku.", "Nikt nie odpowiada za zamówienie od przyjęcia do wysyłki. Sprzedaż, BOK i studio wskazują siebie nawzajem.", "W ocenie kwartalnej konsultantów jedynym wskaźnikiem jest liczba kontaktów dziennie (cel 20). Poprawności rejestracji nikt nie mierzy.", "Dziewięciu z czternastu konsultantów zapisuje dane w Excelu w trakcie rozmowy, a do systemu przepisuje je po rozmowie. Przy przepisywaniu powstają błędy.", "Test zadaniowy w spokojnych warunkach: tylko 4 z 14 osób bezbłędnie rejestrują zamówienie z nadrukiem. Pozostali mylą pola krytyczne albo nie znajdują pól na uwagi, kolor i plik.", "70% rozmów ocenionych przez klientów jako nieuprzejme dotyczyło pytania o status zamówienia, na które konsultant nie znał odpowiedzi.", "Lider zespołu A co tydzień omawia z zespołem błędy. Liderka zespołu B skupia się na codziennym raporcie liczby kontaktów. Reklamacje: A 3,2%, B 5,0%.", "Magazyn korzysta z podobnego systemu od pięciu lat. Brygadzistka Joanna Rudnik wdrażała wszystkie nowe osoby w magazynie.", "Konsultantka: „Umiem rozmawiać z klientem. Nie umiem wpisać tego wszystkiego, kiedy klient czeka na linii.”", "Konsultant: „Wolałbym oddzwonić z gotową specyfikacją, ale wtedy spada mi liczba kontaktów, a z niej jestem rozliczany.”"] },
+      { typ: "area", id: "st", tytul: "Przyczyną czego jest brak dostępu do modułu „Status produkcji”? Jak ma się to do skarg na nieuprzejmość?" },
+      { typ: "area", id: "kp", tytul: "Odpowiedź dla Tomasza: co kwestionariusz stylów komunikacji może wykryć, a czego nie może?" }
+    ],
+    rek: ['<div class="tw"><table><tr><th>Nr</th><th>Element inBOX</th><th>Zmiana</th><th>Właściciel</th></tr><tr><td>1</td><td>3. Zasoby i warunki pracy</td><td>instalować</td><td>IT (Paweł Sroka) z Tomaszem</td></tr><tr><td>2</td><td>3. Zasoby i warunki pracy</td><td>instalować</td><td>IT (Paweł Sroka)</td></tr><tr><td>3</td><td>2. Struktura i procesy</td><td>instalować, częściowo także uczyć się</td><td>Tomasz z Izą Kowal</td></tr><tr><td>4</td><td>2. Struktura i procesy</td><td>instalować</td><td>Sponsor z kierownikami BOK, studia i sprzedaży</td></tr><tr><td>5</td><td>10. Pomiar (ocena kwartalna)</td><td>instalować</td><td>Sponsor (Ewa Nowicka)</td></tr><tr><td>6</td><td>5. Kompetencje, wzmacniane przez długi formularz</td><td>uczyć się</td><td>—</td></tr><tr><td>7</td><td>5. Kompetencje</td><td>uczyć się</td><td>—</td></tr><tr><td>8</td><td>Objaw: przyczyną jest brak dostępu do statusu (nr 2)</td><td>—</td><td>—</td></tr><tr><td>9</td><td>7. Zarządzanie: rytm omawiania błędów w zespole B</td><td>instalować, a kompetencje liderki uczyć się</td><td>Tomasz wobec liderki zespołu B</td></tr><tr><td>10</td><td>Zasób, a nie przyczyna: przyszłe wsparcie konsultantów</td><td>—</td><td>Kierownik magazynu</td></tr><tr><td>11</td><td>5. Kompetencje</td><td>uczyć się</td><td>—</td></tr><tr><td>12</td><td>10. Pomiar, wpływa na 6. Motywację</td><td>instalować</td><td>Sponsor</td></tr></table></div>', '<p><b>Status produkcji:</b> brak uprawnień jest przyczyną części skarg na nieuprzejmość. Konsultant nie zna odpowiedzi, klient czeka, a rozmowa staje się napięta. Szkolenie z komunikacji nie usunęłoby tej przyczyny.</p>', '<p><b>Kwestionariusz:</b> może pokazać preferowane style komunikacji, ale nie wykryje braku uprawnień, dziewięciu ekranów formularza, wskaźnika liczby kontaktów ani braku właściciela zamówienia. Diagnoza prowadzona narzędziem jednego tematu może potwierdzić tylko ten temat.</p>'] },
+
+  { id: "z03", nr: 3, etap: "Diagnoza kompetencji", forma: "i", min: 15,
+    cel: "Sprawdź listę kompetencji przesłaną przez Tomasza i wyprowadź kompetencje z zachowań najlepszych konsultantów.",
+    kroki: ["Obejrzyj film o pracy Oli i typowego konsultanta albo przeczytaj materiał poniżej.", "Przy każdej kompetencji z listy Tomasza zdecyduj, czy przechodzi test: czy jej brak wyjaśnia różnicę między obecnym a oczekiwanym zachowaniem.", "Wpisz wiedzę, umiejętność i postawę, które wynikają z zachowań Oli."],
+    mat: [
+      ["Jak pracuje Ola Mensah (0,9% reklamacji przy średniej 4,1%)", '<ol><li>Prowadzi rozmowę według stałej kolejności sześciu pytań: produkt i ilość, rozmiary lub warianty, miejsce i technika nadruku, kolory, plik z logo, termin i adres.</li><li>Wpisuje dane do systemu w trakcie rozmowy i zna skróty klawiszowe.</li><li>Gdy klient nie ma pliku z logo, wysyła mu w trakcie rozmowy link do przesłania pliku.</li><li>Przed zakończeniem rozmowy odczytuje klientowi całą specyfikację i prosi o potwierdzenie.</li><li>Przy zamówieniach nietypowych umawia się na oddzwonienie i najpierw konsultuje specyfikację ze studiem.</li></ol><p><b>Typowy konsultant</b> zaczyna od ogólnego pytania o potrzeby, zapisuje odpowiedzi w notatkach, przepisuje je do systemu po rozmowie, nie odczytuje specyfikacji i o brakujące dane pyta dopiero wtedy, gdy zgłosi się studio.</p>'],
+      ["Obecny poziom i częstotliwość sytuacji", '<div class="tw"><table><tr><th>Poziom</th><th>Osoby</th></tr><tr><td>Pełny: bezbłędna rejestracja w trakcie rozmowy z potwierdzeniem</td><td>4</td></tr><tr><td>Częściowy: poprawna rejestracja po rozmowie albo bez potwierdzenia</td><td>6</td></tr><tr><td>Niski: błędy w polach krytycznych</td><td>4</td></tr></table></div><p>Konsultant rejestruje średnio sześć zamówień dziennie. Zamówienia nietypowe zdarzają się raz w tygodniu.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "lt", tytul: "Lista kompetencji Tomasza", kol: [{ k: "o", typ: "chips", opcje: ["Przechodzi test", "Nie przechodzi"] }, { k: "u", typ: "text", ph: "Uzasadnienie z danych" }],
+        wiersze: ["Komunikatywność", "Odporność na stres", "Asertywność", "Orientacja na klienta", "Dokładność"] },
+      { typ: "text", id: "w", tytul: "Wiedza wynikająca z zachowań Oli" },
+      { typ: "text", id: "u", tytul: "Umiejętność wynikająca z zachowań Oli" },
+      { typ: "text", id: "p", tytul: "Postawa wynikająca z zachowań Oli" }
+    ],
+    rek: ['<p>Żadna kompetencja z listy Tomasza nie przechodzi testu w tej postaci, ponieważ każda jest etykietą, a nie zachowaniem.</p><ul><li><b>Komunikatywność:</b> konsultanci mówią, że umieją rozmawiać, a skargi dotyczą głównie statusu zamówienia. Brak komunikatywności nie wyjaśnia różnicy.</li><li><b>Odporność na stres:</b> stres wynika z warunków: dziewięciu ekranów, kolejki i wskaźnika liczby kontaktów.</li><li><b>Asertywność</b> i <b>orientacja na klienta:</b> dane nie pokazują, żeby ich brak powodował błędy w specyfikacji.</li><li><b>Dokładność:</b> przechodzi dopiero po przełożeniu na zachowanie, czyli „odczytuje klientowi specyfikację i prosi o potwierdzenie przed zakończeniem rozmowy”.</li></ul>', '<p><b>Wiedza:</b> zna pola krytyczne specyfikacji nadruku i wie, do czego potrzebuje ich studio. <b>Umiejętność:</b> prowadzi rozmowę według sześciu pytań i jednocześnie wprowadza dane do systemu. <b>Postawa:</b> woli dopytać i potwierdzić specyfikację, zanim zakończy rozmowę, niż szybko ją zamknąć.</p>'] },
+
+  { id: "z04a", kod: "Z04A", nr: 4, etap: "Cele i warunki", forma: "i", min: 12,
+    cel: "Przypisz cele do poziomów taksonomii Blooma i rozpoznaj, czego brakuje w celach z ofert szkoleniowych.",
+    kroki: ["Przy każdym z sześciu celów wybierz poziom taksonomii, próg i sposób sprawdzenia.", "Przy każdym z trzech celów z ofert wpisz, czego w nim brakuje: sytuacji, zachowania, efektu albo sposobu sprawdzenia.", "Przepisz jeden z tych celów według wzoru."],
+    mat: [
+      ["Kompetencja i trzy progi", '<p>Kompetencja: konsultant zbiera pełną specyfikację zamówienia w trakcie rozmowy, w sytuacji typowej i nietypowej.</p><ul><li><b>Minimum wiedzy:</b> wie i rozumie, co i dlaczego trzeba zrobić. Sprawdza to test wiedzy.</li><li><b>Minimum kompetencji:</b> wykonuje zadanie poprawnie w sytuacji typowej. Sprawdza to test behawioralny.</li><li><b>Maksimum:</b> radzi sobie w sytuacji nietypowej i ocenia, co zrobić. Sprawdza to zadanie na realnym przypadku.</li></ul>'],
+      ["Wzór celu", '<p class="quote">W sytuacji X pracownik robi Y, co prowadzi do efektu Z. Do celu dopisujemy poziom taksonomii i sposób sprawdzenia.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "bl", tytul: "Cele dotyczące jednej kompetencji", kol: [{ k: "p", typ: "select", opcje: BLOOM, ph: "poziom taksonomii" }, { k: "g", typ: "chips", opcje: ["Minimum wiedzy", "Minimum kompetencji", "Maksimum"] }, { k: "s", typ: "select", opcje: ["Test wiedzy", "Test behawioralny", "Zadanie na realnym przypadku"], ph: "sposób sprawdzenia" }],
+        wiersze: ["Decyduje, czy zamówienie nietypowe można przyjąć do realizacji, czy trzeba je najpierw uzgodnić ze studiem.", "Wymienia pola krytyczne specyfikacji nadruku.", "Rejestruje typowe zamówienie w trakcie rozmowy i odczytuje klientowi specyfikację do potwierdzenia.", "Wyjaśnia, do czego studiu graficznemu potrzebny jest plik z logo w odpowiedniej jakości.", "Rozpoznaje, czego brakuje w zamówieniu z kilkoma wariantami nadruku.", "Układa razem ze studiem specyfikację zamówienia z kilkoma wariantami produktu."] },
+      { typ: "rows", id: "zl", tytul: "Cele z ofert szkoleniowych: czego brakuje?", kol: [{ k: "b", typ: "text", ph: "Czego brakuje?" }],
+        wiersze: ["Uczestnik pozna zasady komunikacji z klientem.", "Uczestnik stanie się bardziej asertywny w kontaktach z klientem.", "Uczestnik zrozumie znaczenie wysokiej jakości obsługi klienta."] },
+      { typ: "area", id: "pr", tytul: "Przepisz jeden z tych celów według wzoru" }
+    ],
+    rek: ['<p><b>Przypisania:</b> cel 1: ocena, maksimum, zadanie na realnym przypadku. Cel 2: wiedza, minimum wiedzy, test wiedzy. Cel 3: zastosowanie, minimum kompetencji, test behawioralny. Cel 4: rozumienie, minimum wiedzy, test wiedzy. Cel 5: analiza, maksimum, zadanie na realnym przypadku. Cel 6: synteza, maksimum, zadanie na realnym przypadku.</p>', '<p><b>Cele z ofert:</b> wszystkim trzem brakuje sytuacji, efektu i sposobu sprawdzenia. Pierwszy i trzeci opisują wiedzę albo rozumienie zamiast zachowania. Drugi opisuje cechę osoby, a nie zachowanie, więc nie da się go sprawdzić ani rozliczyć z niego trenera.</p>', '<p><b>Przykład przepisania:</b> „Gdy klient kwestionuje termin realizacji zamówienia, konsultant wyjaśnia, od czego zależy termin, i proponuje jedną z dwóch dostępnych opcji, co prowadzi do uzgodnienia terminu bez przekazywania sprawy kierownikowi.” Poziom: zastosowanie. Sprawdzenie: symulowana rozmowa oceniana kartą obserwacji.</p>'] },
+
+  { id: "z04", nr: 4, etap: "Cele i warunki", forma: "g", min: 15,
+    cel: "Zapiszcie cel maksimum i cel minimum według wzoru oraz warunki potrzebne do ich realizacji.",
+    kroki: ["Oceńcie cel zapisany przez Tomasza.", "Zapiszcie cel maksimum i cel minimum według wzoru: w sytuacji X pracownik robi Y, co prowadzi do efektu Z.", "Wybierzcie poziom taksonomii Blooma i sposób sprawdzenia.", "Zapiszcie warunki w trzech grupach."],
+    mat: [
+      ["Decyzja sponsora i oczekiwane efekty", '<p>Ewa Nowicka zdecydowała, że przed sezonem celem jest minimum kompetencji przy zamówieniach typowych, a maksimum, czyli samodzielna obsługa zamówień nietypowych, ma zostać osiągnięte do końca marca. Od października w ocenie kwartalnej obok liczby kontaktów znajdzie się odsetek zamówień zarejestrowanych bez błędu.</p><div class="tw"><table><tr><th>Miara</th><th>Stan wyjściowy</th><th>Koniec stycznia</th></tr><tr><td>Reklamacje zamówień</td><td>4,1%</td><td>poniżej 2%</td></tr><tr><td>Zamówienia z niepełną specyfikacją</td><td>38%</td><td>poniżej 10%</td></tr><tr><td>Czas pierwszej odpowiedzi</td><td>28 godzin</td><td>poniżej 12 godzin</td></tr><tr><td>NPS</td><td>21</td><td>co najmniej 36</td></tr></table></div>'],
+      ["Cel w wersji Tomasza", '<p class="quote">„Uczestnik po szkoleniu zna zasady komunikacji z trudnym klientem i obsługę nowego systemu oraz wykazuje postawę zorientowaną na klienta.”</p>']
+    ],
+    pola: [
+      { typ: "area", id: "oc", tytul: "Czego brakuje w celu Tomasza?" },
+      { typ: "group", tytul: "Cel maksimum (do końca marca)", pola: [{ typ: "text", id: "mx_s", tytul: "W sytuacji…" }, { typ: "text", id: "mx_r", tytul: "pracownik robi…" }, { typ: "text", id: "mx_e", tytul: "co prowadzi do efektu…" }, { typ: "select", id: "mx_b", tytul: "Poziom taksonomii", opcje: BLOOM }, { typ: "text", id: "mx_c", tytul: "Sposób sprawdzenia" }] },
+      { typ: "group", tytul: "Cel minimum (przed sezonem)", pola: [{ typ: "text", id: "mn_s", tytul: "W sytuacji…" }, { typ: "text", id: "mn_r", tytul: "pracownik robi…" }, { typ: "text", id: "mn_e", tytul: "co prowadzi do efektu…" }, { typ: "select", id: "mn_b", tytul: "Poziom taksonomii", opcje: BLOOM }, { typ: "text", id: "mn_c", tytul: "Sposób sprawdzenia" }] },
+      { typ: "area", id: "wd", tytul: "Warunki działania" },
+      { typ: "area", id: "wp", tytul: "Warunki próbowania" },
+      { typ: "area", id: "wx", tytul: "Warunki doskonalenia" }
+    ],
+    rek: ['<p><b>Cel Tomasza</b> opisuje wiedzę i postawę, a nie zachowanie. Nie ma w nim sytuacji, efektu ani sposobu sprawdzenia, a „komunikacja z trudnym klientem” nie wynika z diagnozy.</p>', '<p><b>Maksimum:</b> w sytuacji zamówienia nietypowego (kilka wariantów, nietypowy produkt) konsultant ustala specyfikację razem ze studiem graficznym i rejestruje zamówienie bez błędu, co prowadzi do spadku reklamacji poniżej 2%. Poziom: analiza, synteza i ocena. Sprawdzenie: zadanie na realnym zamówieniu nietypowym oceniane przez lidera i studio.</p>', '<p><b>Minimum:</b> w rozmowie z klientem o zamówieniu typowym konsultant zbiera specyfikację według sześciu pytań, wprowadza dane w trakcie rozmowy i odczytuje specyfikację do potwierdzenia, co prowadzi do spadku zamówień z niepełną specyfikacją poniżej 10%. Poziom: zastosowanie. Sprawdzenie: test behawioralny, czyli rejestracja trzech zamówień i symulowana rozmowa oceniana kartą obserwacji.</p>', '<ul><li><b>Warunki działania:</b> uprawnienia do statusu, krótszy formularz, wskaźnik bezbłędnych zamówień w ocenie, właściciel zamówienia od przyjęcia do wysyłki.</li><li><b>Warunki próbowania:</b> plan na dni szkolenia, wydzielony czas, zadania próbne, zgoda na wolniejszą pracę, wsparcie Joanny Rudnik z magazynu, punkt kontrolny.</li><li><b>Warunki doskonalenia:</b> ustalony sposób współpracy ze studiem przy zamówieniach nietypowych, omawianie trudnych przypadków, coaching.</li></ul>'] },
+
+  { id: "z05", nr: 5, etap: "Przygotowanie", forma: "i", min: 15,
+    cel: "Porównaj dwie oferty szkoleniowe macierzą zgodności i dobierz metody do poziomów celu.",
+    kroki: ["Przeczytaj obie oferty i informacje od innych działów.", "Oceń każdą ofertę w czterech kryteriach zgodności.", "Wybierz ofertę i uzasadnij wybór.", "Dobierz metodę do każdego z trzech celów i wybierz rozwiązanie konfliktu terminów."],
+    mat: [
+      ["Oferta pierwsza: „Komunikacja Plus”", '<p>Dwudniowe szkolenie „Trudny klient. Komunikacja asertywna”. Około 40% czasu zajmuje wykład o stylach komunikacji i kwestionariusz stylów. Dalej ćwiczenia asertywnych odpowiedzi na roszczenia, scenki na przykładach z obsługi klienta w banku i ankieta zadowolenia na koniec. Trener ma bardzo dobre opinie uczestników.</p>'],
+      ["Oferta druga: Monika Sadowska", '<p>Jeden dzień w każdej grupie. Trenerka przygotuje szkolenie z Olą Mensah na podstawie schematu sześciu pytań i na prawdziwych zamówieniach GadgetPro. Program: omówienie schematu rozmowy, rejestracja zamówień w środowisku testowym, symulacje rozmów z jednoczesnym wprowadzaniem danych i test behawioralny na koniec. Warunek: IT udostępni środowisko testowe.</p>'],
+      ["Informacje od innych działów", '<div class="tw"><table><tr><th>Działanie</th><th>Kto</th><th>Czas</th></tr><tr><td>Uprawnienia BOK do statusu produkcji</td><td>IT</td><td>2 tygodnie</td></tr><tr><td>Środowisko testowe systemu</td><td>IT</td><td>1 tydzień</td></tr><tr><td>Formularz z 9 do 4 ekranów</td><td>IT i Tomasz</td><td>8 tygodni, do końca listopada</td></tr><tr><td>Właściciel zamówienia od przyjęcia do wysyłki</td><td>Tomasz, Iza Kowal, sprzedaż</td><td>brak terminu</td></tr></table></div><p>Szkolenie: 7 i 9 października. Joanna Rudnik z magazynu może przez trzy tygodnie poświęcać dwie godziny dziennie na wspieranie konsultantów.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "mz", tytul: "Macierz zgodności", kol: [{ k: "a", typ: "chips", opcje: ["Tak", "Częściowo", "Nie"], pod: "Komunikacja Plus" }, { k: "b", typ: "chips", opcje: ["Tak", "Częściowo", "Nie"], pod: "Monika Sadowska" }],
+        wiersze: ["Treści wynikają z celu minimum", "Metody ćwiczą zachowanie z celu, czyli rejestrację w trakcie rozmowy", "Przykłady pochodzą z warunków pracy uczestników", "Sprawdzenie pokazuje, co uczestnik potrafi zrobić"] },
+      { typ: "chips", id: "wyb", tytul: "Wybór oferty", opcje: ["Komunikacja Plus", "Monika Sadowska"] },
+      { typ: "area", id: "uz", tytul: "Uzasadnienie wyboru" },
+      { typ: "rows", id: "mt", tytul: "Dobór metod do celów", kol: [{ k: "m", typ: "select", opcje: ["Wykład", "Pokaz i ćwiczenie według instrukcji", "Symulacja rozmowy z rejestracją w systemie", "Praca na realnym przypadku ze studiem", "Dyskusja"], ph: "metoda" }],
+        wiersze: ["Wiedza: pola krytyczne specyfikacji nadruku", "Zastosowanie: rejestracja zamówienia w trakcie rozmowy", "Analiza i ocena: zamówienie nietypowe"] },
+      { typ: "chips", id: "fo", tytul: "Formularz będzie gotowy po szkoleniu. Co rekomendujesz sponsorowi?", opcje: ["Szkolić na obecnym formularzu, potem krótki instruktaż", "Przesunąć szkolenie na grudzień", "Szkolić bez systemu, tylko schemat rozmowy"] }
+    ],
+    rek: ['<p><b>Macierz:</b> oferta „Komunikacja Plus” nie spełnia żadnego kryterium: treści nie wynikają z celu, metody nie ćwiczą rejestracji, przykłady pochodzą z banku, a sprawdzeniem jest ankieta. Oferta Moniki Sadowskiej spełnia wszystkie cztery kryteria.</p>', '<p><b>Metody:</b> do wiedzy o polach wystarczy pokaz z krótkim omówieniem, do zastosowania potrzebna jest symulacja rozmowy z jednoczesną rejestracją, a do zamówień nietypowych praca na realnym przypadku ze studiem, już po szkoleniu, na etapie doskonalenia.</p>', '<p><b>Formularz:</b> przesunięcie szkolenia na grudzień wypada w środku sezonu, a szkolenie bez systemu nie ćwiczy zachowania z celu. Najmniejsze ryzyko daje szkolenie na obecnym formularzu i krótki instruktaż po jego zmianie. Decyzję podejmuje sponsor.</p>'] },
+
+  { id: "z06", nr: 6, etap: "Szkolenie", forma: "i", min: 10,
+    cel: "Rozstrzygnij, które wyniki szkolenia mówią coś o minimum kompetencji.",
+    kroki: ["Przeczytaj wyniki obu grup.", "Przy każdym wyniku zdecyduj, czy mówi coś o minimum kompetencji.", "Zaproponuj, co zrobić z trzema osobami poniżej minimum, i odpowiedz Tomaszowi."],
+    mat: [
+      ["Wyniki szkolenia", '<p>Test behawioralny: rejestracja trzech zamówień w środowisku testowym i symulowana rozmowa oceniana kartą obserwacji z sześcioma kryteriami. Minimum to trzy zamówienia bez błędu w polach krytycznych i co najmniej pięć z sześciu kryteriów.</p><div class="tw"><table><tr><th>Wynik</th><th>Zespół A (7)</th><th>Zespół B (7)</th></tr><tr><td>Ankieta zadowolenia (1–5)</td><td>4,8</td><td>4,7</td></tr><tr><td>Test wiedzy o systemie (maks. 20)</td><td>18</td><td>18</td></tr><tr><td>Test behawioralny: minimum osiągnięte</td><td>6 osób</td><td>5 osób</td></tr><tr><td>Test behawioralny: poniżej minimum</td><td>1 osoba</td><td>2 osoby</td></tr><tr><td>Plan próbowania zapisany</td><td>7 osób</td><td>7 osób</td></tr></table></div><p>Dwie z trzech osób poniżej minimum myliły pole wariantów rozmiarów, jedna gubiła się, gdy klient zmieniał zdanie w trakcie rozmowy.</p>'],
+      ["Wypowiedzi po szkoleniu", '<p class="quote">Kuba Dziedzic: „Na sali wszystko działa, zobaczymy w poniedziałek, gdy będzie dwadzieścia telefonów w kolejce.”</p><p class="quote">Tomasz Bielak: „Szkolenie było bardzo dobre, ale nadal brakowało w nim komunikacji z trudnym klientem. Może zamówimy jeszcze to drugie szkolenie?”</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "wy", tytul: "Czy wynik mówi coś o minimum kompetencji?", kol: [{ k: "o", typ: "chips", opcje: ["Tak", "Nie"] }],
+        wiersze: ["Ankieta zadowolenia", "Test wiedzy o systemie", "Test behawioralny: minimum osiągnięte", "Test behawioralny: poniżej minimum", "Plan próbowania zapisany"] },
+      { typ: "area", id: "pm", tytul: "Co zrobić z trzema osobami poniżej minimum i kto się tym zajmie?" },
+      { typ: "area", id: "tm", tytul: "Odpowiedź dla Tomasza w sprawie drugiego szkolenia" }
+    ],
+    rek: ['<p><b>O minimum kompetencji mówią tylko wyniki testu behawioralnego.</b> Ankieta pokazuje reakcję uczestników, test wiedzy pokazuje minimum wiedzy, a plan próbowania jest warunkiem następnego etapu, a nie pomiarem.</p>', '<p><b>Osoby poniżej minimum:</b> krótkie uzupełnienie z trenerką albo z Joanną Rudnik, skupione na polu wariantów i na zmianie zdania przez klienta, a potem ponowny test. Organizuje to lider zespołu, HR sprawdza, czy się odbyło.</p>', '<p><b>Tomasz:</b> diagnoza pokazała, że skargi na nieuprzejmość dotyczyły głównie statusu zamówienia, a konsultanci umieją rozmawiać. Drugie szkolenie nie odpowiada na żadną przyczynę z diagnozy.</p>'] },
+
+  { id: "z07", nr: 7, etap: "Próbowanie", forma: "g", min: 20,
+    cel: "Porównajcie próbowanie w zespołach A i B i ustalcie, kto odpowiada za brakujące warunki.",
+    kroki: ["Obejrzyjcie film o pierwszych tygodniach po szkoleniu albo przeczytajcie materiał.", "Przy każdym warunku oceńcie, czy zespół B go miał, i wskażcie, kto za niego odpowiada.", "Odpowiedzcie na pytania pod listą."],
+    mat: [
+      ["Trzy tygodnie po szkoleniu", '<div class="tw"><table><tr><th>Warunek</th><th>Zespół A (Adam Okafor)</th><th>Zespół B (Karolina Wierzba)</th></tr><tr><td>Plan na dni szkolenia</td><td>sprzedaż przejęła e-maile, zaległości niewielkie</td><td>brak zastępstwa, zaległości z dwóch dni</td></tr><tr><td>Wydzielony czas</td><td>30 minut dziennie przez dwa tygodnie</td><td>„ćwiczymy w trakcie normalnej pracy”</td></tr><tr><td>Zadania próbne</td><td>zamówienia wewnętrzne i proste</td><td>od pierwszego dnia wszystkie, także pilne</td></tr><tr><td>Zgoda na wolniejszą pracę</td><td>lider nie ocenia liczby kontaktów przez dwa tygodnie</td><td>na tablicy wisi ranking liczby kontaktów</td></tr><tr><td>Wsparcie na żądanie</td><td>Joanna Rudnik, około pięciu pytań dziennie</td><td>dwa pytania w trzy tygodnie</td></tr><tr><td>Wspólne próbowanie</td><td>omówienie na cotygodniowym spotkaniu</td><td>dwie osoby usłyszały, że „nowa szkoła spowalnia kolejkę”</td></tr><tr><td>Punkt kontrolny</td><td>po dziesięciu dniach</td><td>nie odbył się</td></tr></table></div><p>Pięć osób z zespołu B wróciło do Excela w trakcie rozmowy.</p><p class="quote">Karolina Wierzba: „Mamy sezon za pasem i nie mogę sobie pozwolić na spadek liczby kontaktów. Ludzie przeszli szkolenie, teraz to ich sprawa, żeby z tego korzystać.”</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "wb", tytul: "Warunki próbowania w zespole B", kol: [{ k: "o", typ: "chips", opcje: ["Był", "Częściowo", "Nie było"] }, { k: "k", typ: "select", opcje: ROLE, ph: "kto odpowiada" }],
+        wiersze: ["Plan na dni szkolenia", "Wydzielony czas", "Zadania próbne o niskiej stawce", "Zgoda na wolniejszą pracę i błędy", "Wsparcie na żądanie", "Wspólne próbowanie", "Punkt kontrolny"] },
+      { typ: "area", id: "ka", tytul: "Dlaczego dane z przypadku nie potwierdzają zdania Karoliny?" },
+      { typ: "area", id: "hr", tytul: "Co HR przekaże i komu, a czego nie zrobi, bo nie ma na to wpływu?" },
+      { typ: "area", id: "pw", tytul: "Jak powtórzyć próbowanie w zespole B?" }
+    ],
+    rek: ['<p><b>Zespół B:</b> żaden warunek nie był spełniony. Wsparcie formalnie istniało, ale zespół z niego nie korzystał, bo nie miał czasu. Za wszystkie warunki próbowania odpowiada liderka zespołu B, a za to, że ranking liczby kontaktów nie został zdjęty mimo zmiany wskaźnika, także kierownik BOK i sponsor.</p>', '<p><b>Karolina:</b> oba zespoły przeszły to samo szkolenie i miały podobne wyniki testu, a różnią się tym, co działo się po szkoleniu. Ranking i reakcja kolegów pokazywały konsultantom, że nowe zachowanie nie jest naprawdę oczekiwane.</p>', '<p><b>HR:</b> przekazuje Tomaszowi i sponsorowi porównanie warunków w obu zespołach i wskazuje, czego brakuje. HR nie organizuje czasu ani zadań w zespole B i nie zdejmuje rankingu, bo o pracy zespołu decyduje liderka i jej przełożony.</p>', '<p><b>Powtórzenie:</b> dwa tygodnie z wydzielonym czasem i zadaniami próbnymi, zdjęty ranking, wsparcie Joanny albo Oli, punkt kontrolny prowadzony przez Tomasza.</p>'] },
+
+  { id: "z08", nr: 8, etap: "Zastosowanie i doskonalenie", forma: "i", min: 10,
+    cel: "Odczytaj dynamikę przyrostu kompetencji i rozpoznaj, kiedy przyczyną zatrzymania są warunki.",
+    kroki: ["Przeczytaj tabelę wyników.", "Wybierz moment, w którym zespół B zaczął się rozwijać, i zachowanie, przy którym zatrzymały się oba zespoły.", "Napisz, jakiego warunku brakuje."],
+    mat: [
+      ["Co się zmieniło", '<p>Po informacji od HR Tomasz i Ewa porozmawiali z Karoliną. Od listopada w zespole B zniknął ranking, a Tomasz przez cztery tygodnie prowadził punkty kontrolne. Uproszczony formularz wszedł pod koniec listopada. Skala od 1 do 4, gdzie 2 oznacza minimum, a 4 maksimum.</p><div class="tw"><table><tr><th>Zachowanie</th><th>Zespół</th><th>Koniec szkolenia</th><th>Koniec próbowania</th><th>Po 1 miesiącu</th><th>Po 3 miesiącach</th></tr><tr><td rowspan="2">Zbiera specyfikację według sześciu pytań</td><td>A</td><td>2,8</td><td>3,4</td><td>3,6</td><td>3,7</td></tr><tr><td>B</td><td>2,7</td><td>2,6</td><td>2,9</td><td>3,2</td></tr><tr><td rowspan="2">Wprowadza dane w trakcie rozmowy</td><td>A</td><td>2,5</td><td>3,2</td><td>3,4</td><td>3,6</td></tr><tr><td>B</td><td>2,3</td><td>2,1</td><td>2,4</td><td>2,8</td></tr><tr><td rowspan="2">Potwierdza specyfikację z klientem</td><td>A</td><td>3,0</td><td>3,5</td><td>3,6</td><td>3,8</td></tr><tr><td>B</td><td>2,9</td><td>2,8</td><td>3,0</td><td>3,2</td></tr><tr><td rowspan="2">Obsługuje zamówienie nietypowe ze studiem</td><td>A</td><td>1,8</td><td>2,0</td><td>2,1</td><td>2,1</td></tr><tr><td>B</td><td>1,7</td><td>1,8</td><td>1,8</td><td>1,9</td></tr></table></div><p class="quote">Konsultanci: „Przy zamówieniach nietypowych nie wiadomo, kogo w studiu pytać, a studio odpowiada, kiedy znajdzie czas.”</p>']
+    ],
+    pola: [
+      { typ: "chips", id: "kb", tytul: "Kiedy zespół B zaczął się rozwijać?", opcje: ["Zaraz po szkoleniu", "Po pierwszym miesiącu, gdy zmieniły się warunki", "Dopiero po trzech miesiącach"] },
+      { typ: "chips", id: "st", tytul: "Przy którym zachowaniu zatrzymały się oba zespoły?", opcje: ["Sześć pytań", "Dane w trakcie rozmowy", "Potwierdzenie specyfikacji", "Zamówienie nietypowe"] },
+      { typ: "area", id: "bw", tytul: "Jakiego warunku brakuje i kto powinien go zapewnić?" }
+    ],
+    rek: ['<p><b>Zespół B</b> w czasie próbowania lekko się cofnął, a zaczął rosnąć po pierwszym miesiącu, gdy zniknął ranking i Tomasz prowadził punkty kontrolne. To ten sam zespół i to samo szkolenie, więc zmianę wyjaśniają warunki.</p>', '<p><b>Oba zespoły</b> zatrzymały się przy zamówieniach nietypowych. Gdy cała grupa zatrzymuje się przy tym samym zachowaniu, przyczyną może być brak warunków, a nie problem pojedynczych osób. Brakuje ustalonego sposobu współpracy BOK ze studiem i właściciela zamówienia od przyjęcia do wysyłki. Zapewnić to musi sponsor razem z Tomaszem i Izą Kowal.</p>'] },
+
+  { id: "z09", nr: 9, etap: "Efekty", forma: "g", min: 20,
+    cel: "Przypiszcie efekty do torów i przygotujcie rekomendację dla sponsora.",
+    kroki: ["Porównajcie stan końcowy ze stanem wyjściowym i z celem.", "Przy każdej mierze wskażcie główne źródło zmiany.", "Przygotujcie rekomendację dla Ewy Nowickiej."],
+    mat: [
+      ["Dane na koniec stycznia", '<div class="tw"><table><tr><th>Miara</th><th>Start</th><th>Cel</th><th>Koniec stycznia</th></tr><tr><td>Reklamacje: cały BOK</td><td>4,1%</td><td>poniżej 2%</td><td>2,4%</td></tr><tr><td>Reklamacje: zespół A / zespół B</td><td>3,2% / 5,0%</td><td>poniżej 2%</td><td>1,9% / 2,9%</td></tr><tr><td>Zamówienia z niepełną specyfikacją</td><td>38%</td><td>poniżej 10%</td><td>17%</td></tr><tr><td>Czas pierwszej odpowiedzi</td><td>28 godzin</td><td>poniżej 12 godzin</td><td>13 godzin</td></tr><tr><td>NPS</td><td>21</td><td>co najmniej 36</td><td>33</td></tr><tr><td>Skargi na zachowanie miesięcznie</td><td>11</td><td>—</td><td>5</td></tr></table></div><p>W sezonie liczba zamówień wzrosła o 40%. Zamówienia nietypowe mają 9% błędów, a typowe 1,6%. Skargi na zachowanie spadły głównie w sprawach statusu zamówienia.</p>']
+    ],
+    pola: [
+      { typ: "rows", id: "zr", tytul: "Główne źródło zmiany", kol: [{ k: "o", typ: "select", opcje: ["Tor pozaedukacyjny", "Tor edukacyjny", "Różnica warunków między zespołami", "Czynnik zewnętrzny"], ph: "źródło" }],
+        wiersze: ["Spadek reklamacji w całym BOK", "Różnica reklamacji między zespołami A i B", "Spadek zamówień z niepełną specyfikacją", "Skrócenie czasu pierwszej odpowiedzi", "Spadek skarg na zachowanie"] },
+      { typ: "area", id: "ost", tytul: "Co mogło wpłynąć na wyniki niezależnie od działań firmy i jak ostrożnie trzeba formułować wnioski?" },
+      { typ: "chips", id: "rk", tytul: "Rekomendacja dla sponsora", opcje: ["Zamknięcie sprawy", "Korekta działań", "Nowy cykl"] },
+      { typ: "area", id: "uz", tytul: "Uzasadnienie i, przy nowym cyklu, czego dotyczy nowe zgłoszenie" }
+    ],
+    rek: ['<ul><li><b>Reklamacje w całym BOK:</b> głównie tor edukacyjny, wsparty krótszym formularzem.</li><li><b>Różnica A i B:</b> różnica warunków próbowania.</li><li><b>Niepełna specyfikacja:</b> tor edukacyjny, czyli schemat sześciu pytań, ograniczony przez brak współpracy przy zamówieniach nietypowych.</li><li><b>Czas odpowiedzi</b> i <b>skargi na zachowanie:</b> tor pozaedukacyjny, czyli uprawnienia do statusu zamówienia.</li></ul>', '<p><b>Ostrożność:</b> sezon zmienił liczbę i rodzaj zamówień, a kilka zmian działało jednocześnie, więc wpływu każdej z nich nie da się dokładnie rozdzielić.</p>', '<p><b>Rekomendacja:</b> korekta działań w zespole B i nowy cykl dla zamówień nietypowych. Nowe zgłoszenie dotyczy współpracy BOK ze studiem i właściciela zamówienia od przyjęcia do wysyłki, a jego diagnoza zaczyna się od przyczyn pozaedukacyjnych.</p>'] },
+
+  { id: "z10", nr: 10, etap: "Wnioski", forma: "g", min: 15,
+    cel: "Wyciągnijcie wnioski z całego procesu i zamieńcie je w zmiany z osobą odpowiedzialną i terminem.",
+    kroki: ["Przeczytajcie wypowiedzi uczestników spotkania podsumowującego.", "Zapiszcie trzy najważniejsze wnioski: etap, czego zabrakło, jaka zmiana, kto i do kiedy.", "Odpowiedzcie na pytanie o czerwcowe wdrożenie systemu."],
+    mat: [
+      ["Spotkanie podsumowujące w lutym", '<ol><li class="quote">Ewa Nowicka: „Gdybyśmy we wrześniu kupili szkolenie z komunikacji, wydalibyśmy podobną kwotę i nie zmienilibyśmy statusu zamówień ani formularza.”</li><li class="quote">Tomasz Bielak: „Długo uważałem, że problemem jest postawa ludzi. Dopiero dane z diagnozy pokazały mi, ile pytań dotyczyło statusu, którego nie widzieliśmy.”</li><li class="quote">Karolina Wierzba: „Nie wiedziałam, że punkt kontrolny i zgoda na wolniejszą pracę należą do mnie. Myślałam, że to sprawa HR albo trenerki.”</li><li class="quote">Paweł Sroka: „O tym, że BOK nie ma uprawnień do statusu, dowiedziałem się dopiero z diagnozy. Przy wdrożeniu nikt nas o to nie zapytał.”</li><li class="quote">Joanna Rudnik: „Mogłabym pomagać dłużej, ale po trzech tygodniach wróciłam do pełnych obowiązków w magazynie.”</li><li class="quote">Iza Kowal: „Sprawa odpowiedzialności za zamówienie nadal nie jest rozstrzygnięta i to widać przy zamówieniach nietypowych.”</li><li class="quote">Konsultant z zespołu B: „Gdyby w pierwszych dwóch tygodniach ktoś powiedział nam, że możemy pracować wolniej, łatwiej byłoby się przestawić.”</li></ol>']
+    ],
+    pola: [
+      { typ: "group", tytul: "Wniosek 1", pola: [{ typ: "select", id: "e1", tytul: "Etap", opcje: ["1. Zgłoszenie", "2. Diagnoza przyczyn", "3. Diagnoza kompetencji", "4. Cele i warunki", "5. Przygotowanie", "6. Szkolenie", "7. Próbowanie", "8. Zastosowanie i doskonalenie", "9. Efekty"] }, { typ: "text", id: "b1", tytul: "Czego zabrakło" }, { typ: "text", id: "z1", tytul: "Zmiana" }, { typ: "text", id: "k1", tytul: "Kto i do kiedy" }] },
+      { typ: "group", tytul: "Wniosek 2", pola: [{ typ: "select", id: "e2", tytul: "Etap", opcje: ["1. Zgłoszenie", "2. Diagnoza przyczyn", "3. Diagnoza kompetencji", "4. Cele i warunki", "5. Przygotowanie", "6. Szkolenie", "7. Próbowanie", "8. Zastosowanie i doskonalenie", "9. Efekty"] }, { typ: "text", id: "b2", tytul: "Czego zabrakło" }, { typ: "text", id: "z2", tytul: "Zmiana" }, { typ: "text", id: "k2", tytul: "Kto i do kiedy" }] },
+      { typ: "group", tytul: "Wniosek 3", pola: [{ typ: "select", id: "e3", tytul: "Etap", opcje: ["1. Zgłoszenie", "2. Diagnoza przyczyn", "3. Diagnoza kompetencji", "4. Cele i warunki", "5. Przygotowanie", "6. Szkolenie", "7. Próbowanie", "8. Zastosowanie i doskonalenie", "9. Efekty"] }, { typ: "text", id: "b3", tytul: "Czego zabrakło" }, { typ: "text", id: "z3", tytul: "Zmiana" }, { typ: "text", id: "k3", tytul: "Kto i do kiedy" }] },
+      { typ: "area", id: "cz", tytul: "Czerwcowe wdrożenie systemu: jakiego etapu zabrakło i jakie były tego skutki?" }
+    ],
+    rek: ['<p>Przykładowe wnioski, które wynikają z danych:</p><ol><li><b>Etap 7:</b> liderzy nie wiedzieli, że warunki próbowania należą do nich. Zmiana: lista warunków z nazwiskami w briefie i rozmowa HR z liderami przed szkoleniem. Odpowiada HR, przed każdym kolejnym szkoleniem.</li><li><b>Etap 5:</b> wsparcie z magazynu skończyło się po trzech tygodniach. Zmiana: wsparcie ustalane do osiągnięcia minimum przez wszystkich, z decyzją kierownika magazynu. Odpowiada sponsor.</li><li><b>Etap 2:</b> właściciel zamówienia od przyjęcia do wysyłki nadal nie jest ustalony. Zmiana: decyzja z terminem. Odpowiada sponsor.</li></ol>', '<p><b>Czerwcowe wdrożenie:</b> wprowadzenie systemu było szkoleniem orientacyjnym, czyli godzinnym webinarem, potraktowanym jak wdrożenie. Zabrakło etapów 3–5: diagnozy kompetencji, celów z warunkami oraz przygotowania uprawnień i wsparcia. Skutkiem były błędy, praca równolegle w Excelu i skargi klientów.</p>'] }
+  ];
+  function kod(z) { return z.kod || ("Z" + (z.nr < 10 ? "0" : "") + z.nr); }
+  var ZMAP = {}; Z.forEach(function (z) { ZMAP[z.id] = z; });
+  var PREV = { z02: "z01", z04: "z02", z07: "z04", z09: "z07", z10: "z09" };
+
+  /* ===================== KLUCZ ODPOWIEDZI ===================== */
+  /* rows: kol = poprawne odpowiedzi w kolumnach (lista dopuszczalnych, null = kolumna nieoceniana), kom = komentarz do wiersza
+     chips/select: ok = dopuszczalne odpowiedzi, kom = komentarz; pola otwarte i grupy: wzor = odpowiedź wzorcowa */
+  var I_ = INBOX, OBJAW = INBOX[10];
+  var KLUCZ = {
+  z01: {
+    fi: { kol: { o: [["Interpretacja"], ["Fakt"], ["Interpretacja"], ["Fakt"], ["Fakt"], ["Interpretacja"], ["Fakt"], ["Interpretacja"], ["Interpretacja"], ["Interpretacja"]] },
+      kom: ["To ocena zachowania. Można ją sprawdzić odsłuchem rozmów.", "To liczba z systemu, którą można sprawdzić.", "To domysł o motywacji. Można go sprawdzić danymi o czasie i jakości pracy.", "Wypowiada się osoba, ale opisuje zdarzenie, które da się policzyć w zamówieniach.", "Wypowiada się osoba, ale proporcję da się policzyć w zamówieniach trafiających do studia.", "To teza o przyczynie. Sprawdza ją dopiero diagnoza wszystkich elementów organizacji.", "To pomiar z systemu.", "To odczucie konsultantki. Można je sprawdzić pomiarem czasu rejestracji zamówienia.", "To relacja z drugiej ręki. Można ją sprawdzić analizą pytań klientów.", "Wysoka ocena w ankiecie nie mówi o efekcie. Trzeba ją porównać z wynikiem symulacji (2,8 na 5) i ze wskaźnikami."] },
+    tr: { kol: { o: [["Spełniony"], ["Spełniony"], ["Spełniony"], ["Spełniony"]] },
+      kom: ["Reklamacje wzrosły z 1,8% do 4,1% zamówień, a NPS spadł z 36 do 21.", "Szkolenie ma objąć cały dział BOK.", "Ubiegłoroczne szkolenie 30 osób nie poprawiło wskaźników.", "Problem dotyczy BOK, studia, magazynu i sprzedaży."] },
+    dec: { ok: ["Pełna diagnoza"], kom: "Spełnione są wszystkie cztery warunki, a do uruchomienia pełnej diagnozy wystarczy jeden." },
+    tom: { wzor: "Diagnozy nie powinna prowadzić firma, która potem sprzeda szkolenie z komunikacji. Kwestionariusz stylów komunikacji mierzy wyłącznie komunikację, więc nie wykryje przyczyn leżących w procesie, narzędziach albo w sposobie rozliczania pracy." }
+  },
+  z02: {
+    us: { kol: {
+        a: [[I_[2]], [I_[2]], [I_[1]], [I_[1]], [I_[9]], [I_[4]], [I_[4]], [OBJAW], [I_[6]], [OBJAW], [I_[4]], [I_[9]]],
+        t: [["Instalować"], ["Instalować"], ["Instalować", "Uczyć się"], ["Instalować"], ["Instalować"], ["Uczyć się"], ["Uczyć się"], null, ["Instalować", "Uczyć się"], null, ["Uczyć się"], ["Instalować"]] },
+      kom: ["Długi formularz to narzędzie pracy. Właściciel zmiany: IT (Paweł Sroka) razem z Tomaszem.",
+        "Brak uprawnień to narzędzie pracy. Właściciel zmiany: IT (Paweł Sroka).",
+        "Brak wymaganych pól to luka w procesie przyjęcia zamówienia. Właściciel zmiany: Tomasz z Izą Kowal.",
+        "Brak właściciela zamówienia to luka w strukturze. Właściciel zmiany: sponsor z kierownikami BOK, studia i sprzedaży.",
+        "Ocena kwartalna mierzy tylko liczbę kontaktów. Właściciel zmiany: sponsor (Ewa Nowicka).",
+        "Konsultanci nie umieją wprowadzać danych w trakcie rozmowy, a długi formularz to wzmacnia. Tę część trzeba wyćwiczyć.",
+        "Test w spokojnych warunkach pokazuje brak umiejętności, a nie wpływ presji.",
+        "To objaw. Przyczyną jest brak dostępu do statusu zamówienia (ustalenie 2).",
+        "Rytm omawiania błędów to sposób zarządzania zespołem. Właściciel zmiany: Tomasz wobec liderki zespołu B.",
+        "To zasób, a nie przyczyna: Joanna Rudnik może wspierać konsultantów po szkoleniu. Decyduje kierownik magazynu.",
+        "Konsultantka sama wskazuje brak umiejętności w konkretnej sytuacji.",
+        "Sposób rozliczania zniechęca do dokładności. Przyczyna leży w pomiarze i wpływa na motywację. Właściciel zmiany: sponsor."] },
+    st: { wzor: "Brak uprawnień jest przyczyną części skarg na nieuprzejmość. Konsultant nie zna odpowiedzi, klient czeka, a rozmowa staje się napięta. Szkolenie z komunikacji nie usunęłoby tej przyczyny." },
+    kp: { wzor: "Kwestionariusz może pokazać preferowane style komunikacji, ale nie wykryje braku uprawnień, dziewięciu ekranów formularza, wskaźnika liczby kontaktów ani braku właściciela zamówienia. Diagnoza prowadzona narzędziem jednego tematu może potwierdzić tylko ten temat." }
+  },
+  z03: {
+    lt: { kol: { o: [["Nie przechodzi"], ["Nie przechodzi"], ["Nie przechodzi"], ["Nie przechodzi"], ["Nie przechodzi"]] },
+      kom: ["Konsultanci mówią, że umieją rozmawiać, a skargi dotyczą głównie statusu zamówienia. Brak komunikatywności nie wyjaśnia różnicy.",
+        "Stres wynika z warunków: dziewięciu ekranów, kolejki i wskaźnika liczby kontaktów.",
+        "Dane nie pokazują, żeby brak asertywności powodował błędy w specyfikacji.",
+        "Dane nie pokazują, żeby brak orientacji na klienta powodował błędy w specyfikacji.",
+        "W tej postaci to etykieta. Przechodzi dopiero po przełożeniu na zachowanie: „odczytuje klientowi specyfikację i prosi o potwierdzenie przed zakończeniem rozmowy”."] },
+    w: { wzor: "Zna pola krytyczne specyfikacji nadruku i wie, do czego potrzebuje ich studio." },
+    u: { wzor: "Prowadzi rozmowę według sześciu pytań i jednocześnie wprowadza dane do systemu." },
+    p: { wzor: "Woli dopytać i potwierdzić specyfikację, zanim zakończy rozmowę, niż szybko ją zamknąć." }
+  },
+  z04a: {
+    bl: { kol: {
+        p: [["Ocena"], ["Wiedza"], ["Zastosowanie"], ["Rozumienie"], ["Analiza"], ["Synteza"]],
+        g: [["Maksimum"], ["Minimum wiedzy"], ["Minimum kompetencji"], ["Minimum wiedzy"], ["Maksimum"], ["Maksimum"]],
+        s: [["Zadanie na realnym przypadku"], ["Test wiedzy"], ["Test behawioralny"], ["Test wiedzy"], ["Zadanie na realnym przypadku"], ["Zadanie na realnym przypadku"]] },
+      kom: ["Pracownik podejmuje decyzję według kryteriów, więc to ocena.", "Pracownik odtwarza informację, więc to wiedza.", "Pracownik wykonuje czynność w typowej sytuacji, więc to zastosowanie.", "Pracownik wyjaśnia sens i związek, więc to rozumienie.", "Pracownik rozkłada zamówienie na części i szuka braków, więc to analiza.", "Pracownik tworzy nową całość razem ze studiem, więc to synteza."] },
+    zl: { kol: {}, kom: ["Brakuje sytuacji, zachowania, efektu i sposobu sprawdzenia. „Pozna” opisuje wiedzę, a nie zachowanie.", "Brakuje sytuacji, zachowania, efektu i sposobu sprawdzenia. „Asertywny” opisuje cechę osoby, więc z takiego celu nie da się rozliczyć trenera.", "Brakuje sytuacji, zachowania, efektu i sposobu sprawdzenia. „Zrozumie” opisuje rozumienie, a nie zachowanie."] },
+    pr: { wzor: "„Gdy klient kwestionuje termin realizacji zamówienia, konsultant wyjaśnia, od czego zależy termin, i proponuje jedną z dwóch dostępnych opcji, co prowadzi do uzgodnienia terminu bez przekazywania sprawy kierownikowi.” Poziom: zastosowanie. Sprawdzenie: symulowana rozmowa oceniana kartą obserwacji." }
+  },
+  z04: {
+    oc: { wzor: "Cel Tomasza opisuje wiedzę i postawę, a nie zachowanie. Nie ma w nim sytuacji, efektu ani sposobu sprawdzenia, a „komunikacja z trudnym klientem” nie wynika z diagnozy." },
+    mx_b: { ok: ["Analiza", "Synteza", "Ocena"], kom: "Zamówienie nietypowe wymaga rozłożenia go na części, ułożenia specyfikacji ze studiem i decyzji, więc to poziomy analizy, syntezy i oceny." },
+    mn_b: { ok: ["Zastosowanie"], kom: "Cel minimum to wykonanie czynności w typowej sytuacji, więc to zastosowanie." },
+    "Cel maksimum (do końca marca)": { wzor: "W sytuacji zamówienia nietypowego (kilka wariantów, nietypowy produkt) konsultant ustala specyfikację razem ze studiem graficznym i rejestruje zamówienie bez błędu, co prowadzi do spadku reklamacji poniżej 2%. Sprawdzenie: zadanie na realnym zamówieniu nietypowym oceniane przez lidera i studio." },
+    "Cel minimum (przed sezonem)": { wzor: "W rozmowie z klientem o zamówieniu typowym konsultant zbiera specyfikację według sześciu pytań, wprowadza dane w trakcie rozmowy i odczytuje specyfikację do potwierdzenia, co prowadzi do spadku zamówień z niepełną specyfikacją poniżej 10%. Sprawdzenie: test behawioralny, czyli rejestracja trzech zamówień i symulowana rozmowa oceniana kartą obserwacji." },
+    wd: { wzor: "Uprawnienia do statusu zamówienia, krótszy formularz, wskaźnik bezbłędnych zamówień w ocenie, właściciel zamówienia od przyjęcia do wysyłki." },
+    wp: { wzor: "Plan na dni szkolenia, wydzielony czas, zadania próbne, zgoda na wolniejszą pracę, wsparcie Joanny Rudnik z magazynu, punkt kontrolny." },
+    wx: { wzor: "Ustalony sposób współpracy ze studiem przy zamówieniach nietypowych, omawianie trudnych przypadków, coaching." }
+  },
+  z05: {
+    mz: { kol: { a: [["Nie"], ["Nie"], ["Nie"], ["Nie"]], b: [["Tak"], ["Tak"], ["Tak"], ["Tak"]] },
+      kom: ["„Komunikacja Plus” uczy komunikacji z trudnym klientem, której diagnoza nie wskazała.", "Tylko oferta Moniki Sadowskiej ćwiczy rejestrację w trakcie rozmowy.", "Przykłady „Komunikacji Plus” pochodzą z banku.", "„Komunikacja Plus” kończy szkolenie ankietą, która nie pokazuje, co uczestnik potrafi zrobić."] },
+    wyb: { ok: ["Monika Sadowska"], kom: "Oferta Moniki Sadowskiej spełnia wszystkie cztery kryteria, a oferta „Komunikacji Plus” żadnego." },
+    uz: { wzor: "Treści, metody, przykłady i sprawdzenie w ofercie Moniki Sadowskiej wynikają z celu minimum. Oferta „Komunikacji Plus” odpowiada na problem, którego diagnoza nie potwierdziła." },
+    mt: { kol: { m: [["Pokaz i ćwiczenie według instrukcji", "Wykład"], ["Symulacja rozmowy z rejestracją w systemie"], ["Praca na realnym przypadku ze studiem"]] },
+      kom: ["Do wiedzy o polach wystarczy pokaz z krótkim omówieniem.", "Zachowanie z celu to rejestracja w trakcie rozmowy, więc trzeba je wyćwiczyć w symulacji.", "Zamówienia nietypowe ćwiczy się na realnych przypadkach ze studiem, już po szkoleniu, na etapie doskonalenia."] },
+    fo: { ok: ["Szkolić na obecnym formularzu, potem krótki instruktaż"], kom: "Grudzień wypada w środku sezonu, a szkolenie bez systemu nie ćwiczy zachowania z celu. Decyzję podejmuje sponsor." }
+  },
+  z06: {
+    wy: { kol: { o: [["Nie"], ["Nie"], ["Tak"], ["Tak"], ["Nie"]] },
+      kom: ["Ankieta pokazuje reakcję uczestników.", "Test wiedzy pokazuje minimum wiedzy, a nie minimum kompetencji.", "Test behawioralny sprawdza zachowanie z celu.", "Test behawioralny sprawdza zachowanie z celu.", "Plan próbowania jest warunkiem następnego etapu, a nie pomiarem."] },
+    pm: { wzor: "Krótkie uzupełnienie z trenerką albo z Joanną Rudnik, skupione na polu wariantów i na zmianie zdania przez klienta, a potem ponowny test. Organizuje to lider zespołu, a HR sprawdza, czy się odbyło." },
+    tm: { wzor: "Diagnoza pokazała, że skargi na nieuprzejmość dotyczyły głównie statusu zamówienia, a konsultanci umieją rozmawiać. Drugie szkolenie nie odpowiada na żadną przyczynę z diagnozy." }
+  },
+  z07: {
+    wb: { kol: {
+        o: [["Nie było"], ["Nie było"], ["Nie było"], ["Nie było"], ["Częściowo", "Nie było"], ["Nie było"], ["Nie było"]],
+        k: [["Liderka zespołu B (Karolina Wierzba)", "Kierownik BOK (Tomasz Bielak)"], ["Liderka zespołu B (Karolina Wierzba)"], ["Liderka zespołu B (Karolina Wierzba)"], ["Liderka zespołu B (Karolina Wierzba)", "Kierownik BOK (Tomasz Bielak)", "Sponsor (Ewa Nowicka)"], ["Liderka zespołu B (Karolina Wierzba)", "Inne działy"], ["Liderka zespołu B (Karolina Wierzba)"], ["Liderka zespołu B (Karolina Wierzba)", "Kierownik BOK (Tomasz Bielak)"]] },
+      kom: ["Zespół B nie miał zastępstwa i wrócił do zaległości z dwóch dni.", "„Ćwiczymy w trakcie normalnej pracy” oznacza brak wydzielonego czasu.", "Od pierwszego dnia zespół B dostawał wszystkie zamówienia, także pilne.", "Ranking liczby kontaktów pokazywał, że wolniejsza praca nie jest akceptowana. Za ranking odpowiadają także kierownik BOK i sponsor.", "Wsparcie formalnie istniało, ale zespół nie miał czasu z niego korzystać: dwa pytania w trzy tygodnie.", "Zamiast omawiania próbowania dwie osoby usłyszały, że „nowa szkoła spowalnia kolejkę”.", "Punkt kontrolny się nie odbył."] },
+    ka: { wzor: "Oba zespoły przeszły to samo szkolenie i miały podobne wyniki testu, a różnią się tym, co działo się po szkoleniu. Ranking i reakcja kolegów pokazywały konsultantom, że nowe zachowanie nie jest naprawdę oczekiwane." },
+    hr: { wzor: "HR przekazuje Tomaszowi i sponsorowi porównanie warunków w obu zespołach i wskazuje, czego brakuje. HR nie organizuje czasu ani zadań w zespole B i nie zdejmuje rankingu, bo o pracy zespołu decyduje liderka i jej przełożony." },
+    pw: { wzor: "Dwa tygodnie z wydzielonym czasem i zadaniami próbnymi, zdjęty ranking, wsparcie Joanny albo Oli, punkt kontrolny prowadzony przez Tomasza." }
+  },
+  z08: {
+    kb: { ok: ["Po pierwszym miesiącu, gdy zmieniły się warunki"], kom: "W czasie próbowania zespół B lekko się cofnął, a zaczął rosnąć po pierwszym miesiącu, gdy zniknął ranking i Tomasz prowadził punkty kontrolne. To ten sam zespół i to samo szkolenie, więc zmianę wyjaśniają warunki." },
+    st: { ok: ["Zamówienie nietypowe"], kom: "Oba zespoły zatrzymały się poniżej maksimum przy zamówieniach nietypowych. Gdy cała grupa zatrzymuje się przy tym samym zachowaniu, przyczyną mogą być warunki, a nie pojedyncze osoby." },
+    bw: { wzor: "Brakuje ustalonego sposobu współpracy BOK ze studiem i właściciela zamówienia od przyjęcia do wysyłki. Zapewnić to musi sponsor razem z Tomaszem i Izą Kowal." }
+  },
+  z09: {
+    zr: { kol: { o: [["Tor edukacyjny"], ["Różnica warunków między zespołami"], ["Tor edukacyjny"], ["Tor pozaedukacyjny"], ["Tor pozaedukacyjny"]] },
+      kom: ["Głównie tor edukacyjny, wsparty krótszym formularzem.", "Oba zespoły przeszły to samo szkolenie, a różniły się warunkami próbowania.", "Schemat sześciu pytań, ograniczony przez brak współpracy przy zamówieniach nietypowych.", "Uprawnienia do statusu zamówienia.", "Skargi dotyczyły głównie statusu zamówienia, więc zadziałały uprawnienia do statusu."] },
+    ost: { wzor: "Sezon zmienił liczbę i rodzaj zamówień, a kilka zmian działało jednocześnie, więc wpływu każdej z nich nie da się dokładnie rozdzielić." },
+    rk: { ok: ["Korekta działań", "Nowy cykl"], kom: "Uzasadnione są korekta działań w zespole B i nowy cykl dla zamówień nietypowych. Zamknięcie sprawy nie jest uzasadnione, bo oba zespoły zatrzymały się przy zamówieniach nietypowych." },
+    uz: { wzor: "Korekta działań w zespole B i nowy cykl dla zamówień nietypowych. Nowe zgłoszenie dotyczy współpracy BOK ze studiem i właściciela zamówienia od przyjęcia do wysyłki, a jego diagnoza zaczyna się od przyczyn pozaedukacyjnych." }
+  },
+  z10: {
+    "Wniosek 3": { wzor: "<p>Przykładowe wnioski, które wynikają z danych:</p><ol><li><b>Etap 7:</b> liderzy nie wiedzieli, że warunki próbowania należą do nich. Zmiana: lista warunków z nazwiskami w briefie i rozmowa HR z liderami przed szkoleniem. Odpowiada HR, przed każdym kolejnym szkoleniem.</li><li><b>Etap 5:</b> wsparcie z magazynu skończyło się po trzech tygodniach. Zmiana: wsparcie ustalane do osiągnięcia minimum przez wszystkich, z decyzją kierownika magazynu. Odpowiada sponsor.</li><li><b>Etap 2:</b> właściciel zamówienia od przyjęcia do wysyłki nadal nie jest ustalony. Zmiana: decyzja z terminem. Odpowiada sponsor.</li></ol>" },
+    cz: { wzor: "Wprowadzenie systemu było szkoleniem orientacyjnym, czyli godzinnym webinarem, potraktowanym jak wdrożenie. Zabrakło etapów 3–5: diagnozy kompetencji, celów z warunkami oraz przygotowania uprawnień i wsparcia. Skutkiem były błędy, praca równolegle w Excelu i skargi klientów." }
+  }
+  };
+
+  /* ===================== PAMIĘĆ ===================== */
+  var KL = "sirp2026:";
+  var mem = {};
+  function klucz(id) { return KL + id; }
+  function wczytaj(id) {
+    if (mem[id]) return mem[id];
+    var d = {};
+    try { d = JSON.parse(localStorage.getItem(klucz(id)) || "{}") || {}; } catch (e) { d = {}; }
+    mem[id] = d; return d;
+  }
+  function zapisz(id) {
+    mem[id].zmieniono = new Date().toISOString();
+    try { localStorage.setItem(klucz(id), JSON.stringify(mem[id])); } catch (e) {}
+    var s = document.getElementById("saved"); if (s) { s.textContent = "Zapisano " + new Date().toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" }); }
+  }
+
+  /* ===================== STAN ===================== */
+  var URLP = new URLSearchParams(location.search);
+  var ST = { zad: ZMAP[URLP.get("zadanie")] ? URLP.get("zadanie") : "", kto: "" };
+  try { ST.kto = sessionStorage.getItem(KL + "kto") || ""; } catch (e) {}
+  function idGrupy(n) { return "G" + (n < 10 ? "0" : "") + n; }
+  function etykieta(kto) { return kto.charAt(0) === "G" ? "Grupa " + parseInt(kto.slice(1), 10) : kto.slice(2); }
+
+  /* ===================== POMOCNICZE ===================== */
+  function h(tag, attrs) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === "class") e.className = attrs[k];
+      else if (k === "html") e.innerHTML = attrs[k];
+      else if (k === "text") e.textContent = attrs[k];
+      else if (k.slice(0, 2) === "on") e.addEventListener(k.slice(2), attrs[k]);
+      else e.setAttribute(k, attrs[k]);
+    }
+    for (var i = 2; i < arguments.length; i++) { var c = arguments[i]; if (c == null) continue; if (Array.isArray(c)) c.forEach(function (x) { if (x) e.appendChild(x); }); else e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); }
+    return e;
+  }
+  var $main = document.getElementById("main");
+  function adres(zad) { var u = new URL(location.href); u.search = ""; if (zad) u.searchParams.set("zadanie", zad); return u.toString(); }
+  function idz(zad) { ST.zad = zad; try { history.pushState({}, "", adres(zad)); } catch (e) {} render(); window.scrollTo(0, 0); }
+  window.addEventListener("popstate", function () { var p = new URLSearchParams(location.search).get("zadanie"); ST.zad = ZMAP[p] ? p : ""; render(); });
+
+  /* ===================== OKNO ===================== */
+  function okno(tytul, tresc, przyciski) {
+    var tlo = h("div", { class: "okno-tlo" });
+    var zamknij = function () { tlo.remove(); };
+    var akcje = h("div", { class: "actions" });
+    (przyciski || [["Zamknij", null]]).forEach(function (p) { akcje.appendChild(h("button", { class: "btn", type: "button", onclick: function () { zamknij(); if (p[1]) p[1](); } }, p[0])); });
+    tlo.appendChild(h("div", { class: "okno", role: "dialog", "aria-modal": "true" }, h("h2", { text: tytul }), typeof tresc === "string" ? h("p", { text: tresc }) : tresc, akcje));
+    document.body.appendChild(tlo);
+    tlo.querySelector("button").focus();
+  }
+
+  function ustawKto(kto) { ST.kto = kto; try { sessionStorage.setItem(KL + "kto", kto); } catch (e) {} }
+
+  /* ===================== POLA ===================== */
+  function wartosc(d, id) { return d[id]; }
+  function ustaw(kto, zid, id, v) { var d = wczytaj(kto); d[zid] = d[zid] || {}; d[zid][id] = v; zapisz(kto); }
+  function poleTekst(kto, zid, id, typ, ph) {
+    var d = (wczytaj(kto)[zid] || {});
+    var el = typ === "area" ? h("textarea", { id: zid + "_" + id }) : h("input", { type: "text", id: zid + "_" + id });
+    if (ph) el.placeholder = ph;
+    el.value = d[id] || "";
+    var t; el.addEventListener("input", function () { clearTimeout(t); t = setTimeout(function () { ustaw(kto, zid, id, el.value); }, 350); });
+    return el;
+  }
+  function poleSelect(kto, zid, id, opcje, ph) {
+    var d = (wczytaj(kto)[zid] || {});
+    var el = h("select", { id: zid + "_" + id }, h("option", { value: "", text: ph || "wybierz…" }));
+    opcje.forEach(function (o) { el.appendChild(h("option", { value: o, text: o })); });
+    el.value = d[id] || "";
+    el.addEventListener("change", function () { ustaw(kto, zid, id, el.value); });
+    return el;
+  }
+  function poleChips(kto, zid, id, opcje) {
+    var d = (wczytaj(kto)[zid] || {});
+    var box = h("div", { class: "chips", role: "radiogroup" });
+    opcje.forEach(function (o) {
+      var b = h("button", { class: "chip", type: "button", "aria-pressed": d[id] === o ? "true" : "false", text: o });
+      b.addEventListener("click", function () {
+        var nowa = (wczytaj(kto)[zid] || {})[id] === o ? "" : o;
+        ustaw(kto, zid, id, nowa);
+        box.querySelectorAll(".chip").forEach(function (x) { x.setAttribute("aria-pressed", x.textContent === nowa ? "true" : "false"); });
+      });
+      box.appendChild(b);
+    });
+    return box;
+  }
+  function rysujPole(kto, zid, p) {
+    if (p.typ === "group") {
+      var g = h("div", { class: "panel" }, h("h2", { text: p.tytul }));
+      p.pola.forEach(function (q) { g.appendChild(rysujPole(kto, zid, q)); });
+      var kg = kluczPola(zid, p.tytul); if (kg && kg.wzor) fbWzor(kto, zid, "#" + p.tytul, kg, g);
+      return g;
+    }
+    if (p.typ === "rows") {
+      var wrap = h("div", { class: "panel" }, h("h2", { text: p.tytul }));
+      var rows = h("div", { class: "rows" });
+      p.wiersze.forEach(function (w, i) {
+        var r = h("div", { class: "row" }, h("div", { class: "it", html: "<b>" + (i + 1) + ".</b> " }));
+        r.firstChild.appendChild(document.createTextNode(w));
+        var c = h("div", { class: "ctrls" });
+        p.kol.forEach(function (k) {
+          var id = p.id + "_" + i + "_" + k.k, el;
+          if (k.typ === "chips") el = poleChips(kto, zid, id, k.opcje);
+          else if (k.typ === "select") el = poleSelect(kto, zid, id, k.opcje, k.ph);
+          else el = poleTekst(kto, zid, id, "text", k.ph);
+          c.appendChild(k.pod ? h("div", { class: "field" }, h("span", { class: "sub", text: k.pod }), el) : el);
+        });
+        r.appendChild(c); fbWiersz(kto, zid, p, i, r); rows.appendChild(r);
+      });
+      wrap.appendChild(rows); return wrap;
+    }
+    var f = h("div", { class: "field" });
+    var lab = h("label", { for: zid + "_" + p.id, text: p.tytul });
+    var kl = kluczPola(zid, p.id);
+    if (p.typ === "chips") { f.appendChild(h("span", { class: "lbl", text: p.tytul })); f.appendChild(poleChips(kto, zid, p.id, p.opcje)); }
+    else {
+      f.appendChild(lab);
+      if (p.typ === "select") f.appendChild(poleSelect(kto, zid, p.id, p.opcje));
+      else f.appendChild(poleTekst(kto, zid, p.id, p.typ === "area" ? "area" : "text"));
+    }
+    if (kl && kl.ok) fbWybor(kto, zid, p.id, kl, f);
+    else if (kl && kl.wzor) fbWzor(kto, zid, p.id, kl, f);
+    return f;
+  }
+
+  /* ===================== INFORMACJA ZWROTNA ===================== */
+  /* Zadania indywidualne: komentarz pod każdą odpowiedzią od razu. Zadania grupowe: po kliknięciu „Sprawdź odpowiedzi”. */
+  var CUR = null;
+  function kluczPola(zid, id) { return (KLUCZ[zid] || {})[id]; }
+  function rowne(v, lista) { return !!v && lista.indexOf(v) >= 0; }
+  function fbUstaw(fb, klasa, html, widac) { fb.className = "fb " + klasa; fb.innerHTML = html; fb.hidden = !widac; }
+  function fbWzor(kto, zid, id, kl, cel) {
+    /* pole otwarte: odpowiedź wzorcowa; w zadaniu indywidualnym pod przyciskiem */
+    var fb = h("div", { class: "fb wz", hidden: "" }); cel.appendChild(fb);
+    var btn = null;
+    if (CUR.forma === "i") {
+      btn = h("button", { class: "btn", type: "button", text: "Pokaż odpowiedź wzorcową", onclick: function () { ustaw(kto, zid, "_wz_" + id, "1"); odswiez(); } });
+      cel.appendChild(h("div", { class: "actions" }, btn));
+    }
+    CUR.upd.push(function () {
+      var d = wczytaj(kto)[zid] || {};
+      var widac = CUR.forma === "g" ? CUR.spr : !!d["_wz_" + id];
+      if (btn) btn.parentNode.hidden = widac;
+      fbUstaw(fb, "wz", '<b class="t">Odpowiedź wzorcowa.</b> ' + kl.wzor, widac);
+      return { pkt: 0, max: 0, odp: id.charAt(0) === "#" || !!d[id] };
+    });
+  }
+  function fbWiersz(kto, zid, p, i, r) {
+    var kl = kluczPola(zid, p.id); if (!kl) return;
+    var fb = h("div", { class: "fb", hidden: "" }); r.appendChild(fb);
+    CUR.upd.push(function () {
+      var d = wczytaj(kto)[zid] || {}, kol = kl.kol || {}, pkt = 0, max = 0, odp = true, cos = false, wzor = [];
+      p.kol.forEach(function (c) {
+        var v = d[p.id + "_" + i + "_" + c.k], lista = kol[c.k] && kol[c.k][i];
+        if (v) cos = true;
+        if (lista) { max++; if (!v) odp = false; if (rowne(v, lista)) pkt++; wzor.push(lista.join(" albo ")); }
+      });
+      var kom = (kl.kom && kl.kom[i]) || "";
+      var widac = CUR.forma === "g" ? CUR.spr : (max ? odp : cos);
+      if (!max) fbUstaw(fb, "wz", '<b class="t">Odpowiedź wzorcowa.</b> ' + kom, widac);
+      else if (pkt === max) fbUstaw(fb, "ok", '<b class="t">Poprawnie.</b> ' + kom, widac);
+      else fbUstaw(fb, "zle", '<b class="t">' + (odp ? "Do poprawy." : "Brak odpowiedzi.") + '</b> Prawidłowo: ' + wzor.join(" · ") + ". " + kom, widac);
+      return { pkt: pkt, max: max, odp: max ? odp : true };
+    });
+  }
+  function fbWybor(kto, zid, id, kl, cel) {
+    var fb = h("div", { class: "fb", hidden: "" }); cel.appendChild(fb);
+    CUR.upd.push(function () {
+      var v = (wczytaj(kto)[zid] || {})[id], ok = rowne(v, kl.ok);
+      var widac = CUR.forma === "g" ? CUR.spr : !!v;
+      if (ok) fbUstaw(fb, "ok", '<b class="t">Poprawnie.</b> ' + kl.kom, widac);
+      else fbUstaw(fb, "zle", '<b class="t">' + (v ? "Do poprawy." : "Brak odpowiedzi.") + '</b> Prawidłowo: ' + kl.ok.join(" albo ") + ". " + kl.kom, widac);
+      return { pkt: ok ? 1 : 0, max: 1, odp: !!v };
+    });
+  }
+  function odswiez() {
+    if (!CUR) return;
+    var P = 0, M = 0, brak = 0;
+    CUR.upd.forEach(function (f) { var r = f(); P += r.pkt; M += r.max; if (!r.odp) brak++; });
+    CUR.brak = brak;
+    var w = CUR.wynik; if (!w) return;
+    var proc = M ? Math.round(100 * P / M) : 0;
+    w.hidden = CUR.forma === "g" ? !CUR.spr : !M;
+    w.innerHTML = "";
+    if (M) w.appendChild(h("div", { class: "proc", text: proc + "%" }));
+    w.appendChild(h("div", {},
+      h("b", { text: M ? (CUR.forma === "g" ? "Wynik: " : "Poprawne odpowiedzi: ") + P + " z " + M + " odpowiedzi zamkniętych" : "To zadanie ma tylko odpowiedzi otwarte" }),
+      h("p", { class: "muted", text: !M ? "Porównajcie swoje odpowiedzi z odpowiedziami wzorcowymi pod polami." : CUR.forma === "g" ? "Komentarze są pod każdą odpowiedzią. Odpowiedzi otwarte porównajcie z odpowiedziami wzorcowymi pod polami. Możecie nadal poprawiać odpowiedzi." : "Wynik zmienia się z każdą odpowiedzią. Komentarz pojawia się pod odpowiedzią." })));
+  }
+  ["click", "change"].forEach(function (ev) { $main.addEventListener(ev, function () { setTimeout(odswiez, 0); }); });
+
+  /* ===================== ZEGAR ===================== */
+  var ZG = { koniec: 0, min: 0 };
+  function zegarStart(kto, z) {
+    var d = wczytaj(kto); d.start = d.start || {};
+    if (!d.start[z.id]) { d.start[z.id] = Date.now(); zapisz(kto); }
+    ZG.koniec = d.start[z.id] + z.min * 60000; ZG.min = z.min;
+    document.getElementById("zegar").hidden = false; tik();
+  }
+  function tik() {
+    var el = document.getElementById("zegar"); if (el.hidden) return;
+    var zost = ZG.koniec - Date.now(), m = Math.ceil(zost / 60000), frac = Math.max(0, zost) / (ZG.min * 60000);
+    document.getElementById("zt").textContent = zost > 0 ? m : "0";
+    document.getElementById("luk").setAttribute("stroke-dashoffset", (251.3 * (1 - frac)).toFixed(1));
+    el.className = "zegar " + (zost <= 0 ? "f4" : frac < 0.15 ? "f3" : frac < 0.4 ? "f2" : "f1");
+    el.setAttribute("aria-label", zost > 0 ? "Zostało około " + m + " minut" : "Czas minął");
+  }
+  setInterval(tik, 1000);
+
+  /* ===================== WIDOKI ===================== */
+  function naglowek() {
+    document.getElementById("who").textContent = ST.kto ? etykieta(ST.kto) : "";
+  }
+
+  function widokLista() {
+    document.getElementById("zegar").hidden = true;
+    $main.appendChild(h("div", { class: "panel" }, h("h1", { text: "Zadania: przypadek GadgetPro" }),
+      h("p", { class: "muted", text: "Każde zadanie odpowiada jednemu etapowi modelu „Zegar rozwoju”. Zadania grupowe wykonuje grupa z pokoju w Teams: jedna osoba udostępnia ekran i wpisuje odpowiedzi. Zadania indywidualne każdy wykonuje sam. W zadaniu indywidualnym komentarz pojawia się pod każdą odpowiedzią, a w zadaniu grupowym po kliknięciu „Sprawdź odpowiedzi”." })));
+    var list = h("div", { class: "tasks" });
+    Z.forEach(function (z) {
+      list.appendChild(h("a", { class: "tlink", href: adres(z.id), onclick: function (e) { e.preventDefault(); idz(z.id); } },
+        h("span", { class: "zico", html: svg(z.nr) }),
+        h("span", {}, h("b", { text: kod(z) + " · " + z.etap }), h("span", { class: "muted", text: z.cel })),
+        h("span", { class: "tag " + z.forma, text: z.forma === "g" ? "grupowe" : "indywidualne" })));
+    });
+    $main.appendChild(list);
+  }
+
+  function widokKto(z) {
+    document.getElementById("zegar").hidden = true;
+    var p = h("div", { class: "panel" });
+    p.appendChild(h("span", { class: "tag " + z.forma, text: kod(z) + " · " + (z.forma === "g" ? "zadanie grupowe" : "zadanie indywidualne") }));
+    p.appendChild(h("h1", { text: z.etap }));
+    if (z.forma === "g") {
+      p.appendChild(h("p", { text: "Wybierz numer swojej grupy, czyli numer pokoju w Teams. Jedna osoba udostępnia ekran i wpisuje odpowiedzi grupy." }));
+      var gr = h("div", { class: "groups" });
+      for (var n = 1; n <= 12; n++) (function (n) { gr.appendChild(h("button", { class: "btn", type: "button", onclick: function () { ustawKto(idGrupy(n)); render(); }, text: "Grupa " + n })); })(n);
+      p.appendChild(gr);
+    } else {
+      p.appendChild(h("p", { text: "Wpisz swoje imię i nazwisko. Odpowiedzi zapisują się w tej przeglądarce." }));
+      var inp = h("input", { type: "text", id: "imie", placeholder: "Imię i nazwisko", maxlength: "60" });
+      var go = function () { var v = inp.value.trim(); if (!v) { inp.focus(); return; } ustawKto("O:" + v); render(); };
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") go(); });
+      p.appendChild(inp);
+      p.appendChild(h("div", { class: "actions" }, h("button", { class: "btn", type: "button", onclick: go, text: "Rozpocznij zadanie" })));
+    }
+    $main.appendChild(p);
+  }
+
+  function widokZadanie(z) {
+    var kto = ST.kto, nr = kod(z);
+    zegarStart(kto, z);
+    var head = h("div", { class: "panel" },
+      h("div", { class: "zhead" }, h("span", { class: "zico", html: svg(z.nr) }),
+        h("div", {}, h("div", { class: "zmeta" }, h("span", { class: "tag", text: nr + " · etap " + z.nr + " z 10" }), h("span", { class: "tag " + z.forma, text: z.forma === "g" ? "grupowe" : "indywidualne" }), h("span", { class: "tag", text: "około " + z.min + " minut" })),
+          h("h1", { text: z.etap }))),
+      h("p", { text: z.cel }),
+      h("h3", { text: "Co robicie" }), h("ol", { class: "steps" }, z.kroki.map(function (k) { return h("li", { text: z.forma === "i" ? k : k }); })));
+    $main.appendChild(head);
+
+    $main.appendChild(h("h2", { text: "Materiały z przypadku GadgetPro" }));
+    z.mat.forEach(function (m, i) {
+      var d = h("details", { class: "mat" }, h("summary", { text: m[0] }), h("div", { class: "matbody", html: m[1] }));
+      if (i === 0) d.open = true;
+      $main.appendChild(d);
+    });
+    var prev = PREV[z.id];
+    if (z.forma === "g" && prev) {
+      var pz = ZMAP[prev];
+      $main.appendChild(h("details", { class: "mat" }, h("summary", { text: "Rozwiązanie zadania " + kod(pz) + " · " + pz.etap + " (punkt wyjścia)" }), h("div", { class: "matbody", html: pz.rek.join("") })));
+    }
+
+    $main.appendChild(h("h2", { text: "Wasza praca" }));
+    var d0 = wczytaj(kto);
+    CUR = { kto: kto, zid: z.id, forma: z.forma, upd: [], spr: !!(d0.spr && d0.spr[z.id]), brak: 0, wynik: null };
+    z.pola.forEach(function (p) { $main.appendChild(rysujPole(kto, z.id, p)); });
+
+    CUR.wynik = h("div", { class: "panel wynik", hidden: "" });
+    $main.appendChild(CUR.wynik);
+    var akcje = h("div", { class: "actions" });
+    if (z.forma === "g") {
+      var sprawdz = function () {
+        var d = wczytaj(kto); d.spr = d.spr || {}; d.spr[z.id] = Date.now(); zapisz(kto);
+        CUR.spr = true; odswiez(); CUR.wynik.scrollIntoView({ behavior: "smooth", block: "center" });
+      };
+      akcje.appendChild(h("button", { class: "btn", type: "button", text: "Sprawdź odpowiedzi", onclick: function () {
+        odswiez();
+        if (CUR.brak > 0) okno("Sprawdzić odpowiedzi?", "Brakuje odpowiedzi w " + CUR.brak + " " + (CUR.brak === 1 ? "miejscu" : "miejscach") + ". Po sprawdzeniu nadal możecie zmieniać odpowiedzi.", [["Sprawdź", sprawdz], ["Jeszcze pracujemy", null]]);
+        else sprawdz();
+      } }));
+    }
+    akcje.appendChild(h("button", { class: "btn", type: "button", text: z.forma === "g" ? "Zmień grupę" : "Zmień osobę", onclick: function () { ustawKto(""); render(); } }));
+    $main.appendChild(h("div", { class: "panel" }, akcje, h("span", { class: "saved", id: "saved", text: "Odpowiedzi zapisują się automatycznie w tej przeglądarce." }),
+      h("p", { class: "muted", text: "Kolejne zadanie otworzysz w karcie ze stroną startową." }),
+      h("p", { class: "muted", text: z.forma === "g" ? "Gdy skończycie, kliknijcie „Sprawdź odpowiedzi”. Komentarze pojawią się pod odpowiedziami, a wynik nad przyciskami. Prowadzący losuje grupy do omówienia, więc każda grupa przygotowuje się do odpowiedzi." : "Komentarz pojawia się pod każdą odpowiedzią zamkniętą. Przy odpowiedziach otwartych kliknij „Pokaż odpowiedź wzorcową”, gdy skończysz pisać." })));
+    odswiez();
+  }
+
+  function render() {
+    $main.innerHTML = ""; CUR = null;
+    var z = ZMAP[ST.zad];
+    if (z && ST.kto && ((z.forma === "g") !== (ST.kto.charAt(0) === "G"))) { /* zadanie innej formy niż wybrana tożsamość */ }
+    naglowek();
+    if (!z) { widokLista(); return; }
+    var pasuje = ST.kto && ((z.forma === "g") === (ST.kto.charAt(0) === "G"));
+    if (!pasuje) { widokKto(z); return; }
+    naglowek(); widokZadanie(z);
+  }
+  render();
+})();
+</script>
+</body>
+</html>
